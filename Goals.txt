@@ -1,0 +1,29 @@
+My exact goals will be:
+Load directory list from folder and filter folders
+Augment filename strings through five modifying stages (add string, counter from X to Y, Substring, and replacing)
+Provide preview of new filenames
+Write changes
+Do it all in a three pane jframe window
+Make source code available on github throughout development.
+
+My extra goals will be:
+Command Line Interface version
+More modifiers (ie right to left substring, all caps/no caps, 
+Rename folders
+Multi level directory renaming
+Make a Jar version
+Compile binaries for Windows, Mac, and Linux
+
+ 
+
+Going on my past experience for writing software I'm going to do the Scotty thing and overestimate my times slightly. If everything goes smoothly and I get the whole program finished with lots of time to spare, which is as likely as finding a Unicorn carrying a pot of gold through Atlantis, then I will be hitting my extra goals. The thing I'm expecting to take the longest is the jframe gui because that is my weakest area in java. I comment as I code and I intend to use the JavaDocs which I have not done before.
+
+Overall time: 20-29h
+Coding/Commenting: 14-20h
+Debug: 1-2h
+Documentation: 2-3h
+Testing: 3-4h
+
+ 
+
+This is actually a program I have been meaning to write for a while so I am excited to do it. I will continue the development after this class is over because I will be using it a lot.

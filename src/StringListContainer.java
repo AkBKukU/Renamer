@@ -49,7 +49,85 @@ public class StringListContainer {
         
         return output;
     }
+
     
+    /* actCounter
+     * 
+     * Adds a counter as a suffix
+     * 
+     * ID: 2
+     * 
+     */
+    private String[] actCounter(String[] input, String modValues){
+
+        final int STRING_COUNT = input.length;
+        String[] output = new String[STRING_COUNT];
+        
+        boolean isValid = true;
+        int start = 0;
+        
+        
+        try { 
+            start = Integer.parseInt(modValues); 
+        } catch(NumberFormatException e) { 
+            isValid = false;
+        }
+        
+        if(isValid){
+            for(int c = 0; c < STRING_COUNT; c++){
+                output[c] = input[c] + modValues;
+            }
+        }
+        
+        return output;
+    }
+
+    
+    /* actSubstring
+     * 
+     * Adds a counter as a suffix
+     * 
+     * ID: 3
+     * 
+     */
+    private String[] actSubstring(String[] input, String modValues){
+
+        final int STRING_COUNT = input.length;
+        String[] output = new String[STRING_COUNT];
+        
+        boolean isValid = true;
+        String[] counterLimits= modValues.split(":");
+        int maxLength = counterLimits[0].length();
+        int start = 0;
+        int end = 100;
+        
+        
+        try { 
+            start = Integer.parseInt(counterLimits[0]); 
+        } catch(NumberFormatException e) { 
+            isValid = false;
+        }
+        try { 
+            end = Integer.parseInt(counterLimits[1]); 
+        } catch(NumberFormatException e) { 
+            isValid = false;
+        }
+        
+        
+        for(int c = 0; c < STRING_COUNT; c++){
+            output[c] = input[c] + modValues;
+        }
+        
+        return output;
+    }
+
+
+    
+    /* addAction
+     * 
+     * Adds an action to the string modifier list
+     * 
+     */
     public void addAction(int actionID, String actionValue){
 
         boolean notAdded = true;

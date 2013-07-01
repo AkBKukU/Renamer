@@ -1,0 +1,71 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title> Renamer Specifications </title>
+        <meta charset=utf-8>
+        <link rel=StyleSheet href="content/styles/global.css" type="text/css">
+        
+    </head>
+    <body>
+        <div id="site" class="theme" >
+        
+		    <header>
+                <h1><a href="index.html"> Renamer Specifications</a> v0.01 </h1>
+                <h2> - Overview </h2>
+                <nav>
+                    <ul>
+                        <li><a href="#stringModifier" > String Modifiers </a></li>
+                        <li><a href="#layout" > Layout </a></li>
+                        <li><a href="#code" > Code </a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div id="wrapper" class="theme" >
+                <p>
+                    Renamer is an apllication for renaming multiple files at once. It is meant to be used with sets of related files such as music or photos that should all be named in a similar way. It works by manipulating the original filename with different modifing techniques. 
+                </p>
+                
+                <header>
+                    <h3 id="stringModifier" > String Modifiers </h3>
+                </header>
+                <ul>
+                
+                    <li> Prefix - Add text to begining of filename </li>
+                    <li> Suffix - Add text to end of filename </li>
+                    <li> Counter (WIP) - Add incrementing number to list of files </li>
+                    <li> Substring (WIP) - Reduce whole string to a subset of itself </li>
+                    <li> Replace (WIP) - Replace one string with another </li>
+                    
+                </ul>
+                
+                <header>
+                    <h3 id="layout" > Layout </h3>
+                </header>
+                <p>
+                    The layout of the program will use three main collumns that have the controls, the original filenames, and a preveiw of the new filenames. It will look similar to this:
+                </p>
+                <img class="centerImage" src="content/images/goal.png" alt="Graphic reperesntation of program" title="Program goal" >
+                
+                <header>
+                    <h3 id="code" > Code </h3>
+                </header>
+                <p>
+                    The individual classes have not been pinned down yet but I have got one for holding the list and modifing it. 
+                <p>
+                    The code will utilize an object to hold the filenames in a string array field. They will never be dirrectly modified. They will be modified when needed by a list of actions and values that parse the names through the objects methods. The actions are stored in a strin array that uses delimiters to contain the different values. For example, the replace's entry would look like this <code>4mispeled/spelled</code>. The first character <code>4</code> is the method or <em>action's</em> ID. The <code>mispeled</code> is the text to be replaced and the <code>spelled</code> is what will replace it. The forward slash is used as a delimiter since it is not allowed in filesystems.
+                </p>
+                
+<!--                                        Footer Begin                                        -->
+            </div>
+        </div>
+
+        <footer>
+            <p>Renamer is by Shelby Jueden <a href="https://github.com/AkBKukU/Renamer" title="It's on GitHub">View project on GitHub</a></p>
+        </footer>
+
+    </body>
+</html>
+        		
+

@@ -30,7 +30,7 @@ public class Renamer {
                 
                 StringListContainer stringList = new StringListContainer(demoEntries);
                 moddedNames = stringList.getModStringList();
-                System.out.println("Input Strings:" + "\n");
+                System.out.println("Start Strings:" + "\n");
                 
                 for(int c = 0; c < numNames; c++){
 
@@ -38,10 +38,28 @@ public class Renamer {
                 }
                 System.out.println( "\n" +  "\n");
 
-                stringList.addAction(0, "Prefixing rules! ");
+                stringList.addAction(0, "IMG");
                 moddedNames = stringList.getModStringList();
 
-                System.out.println("Prefixed Strings:" + "\n");
+                System.out.println("Added Strings:" + "\n");
+                for(int c = 0; c < numNames; c++){
+
+                    System.out.println(moddedNames[c]);
+                }
+
+                stringList.addAction(2, "0000:1");
+                moddedNames = stringList.getModStringList();
+
+                System.out.println("Added Counter:" + "\n");
+                for(int c = 0; c < numNames; c++){
+
+                    System.out.println(moddedNames[c]);
+                }
+
+                stringList.addAction(0, " - ");
+                moddedNames = stringList.getModStringList();
+
+                System.out.println("Added Strings:" + "\n");
                 for(int c = 0; c < numNames; c++){
 
                     System.out.println(moddedNames[c]);
@@ -49,10 +67,10 @@ public class Renamer {
                 
                 System.out.println( "\n" +  "\n");
 
-                stringList.addAction(1, " Sufixing rules!");
+                stringList.addAction(3, "0:10");
                 moddedNames = stringList.getModStringList();
 
-                System.out.println("Suffixed Strings:" + "\n");
+                System.out.println("Added Substrings:" + "\n");
                 for(int c = 0; c < numNames; c++){
 
                     System.out.println(moddedNames[c]);

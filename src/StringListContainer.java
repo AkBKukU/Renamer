@@ -7,23 +7,24 @@ public class StringListContainer {
     String stringList[];
     
     public StringListContainer(String[] rawStrings){
+        
         stringList = rawStrings;
     }
     
-    /* actPrefix
+    /* actString
      * 
      * Adds a string as a prefix
      * 
      * ID: 0
      * 
      */
-    private String[] actPrefix(String[] input, String modValues){
+    private String[] actString(String[] input, String modValues){
         
         final int STRING_COUNT = input.length;
         String[] output = new String[STRING_COUNT];
         
         for(int c = 0; c < STRING_COUNT; c++){
-            output[c] = modValues + input[c];
+            output[c] = input[c] + modValues;
         }
         
         return output;
@@ -39,7 +40,7 @@ public class StringListContainer {
      */
     private String[] actSuffix(String[] input, String modValues){
         
-
+        
         final int STRING_COUNT = input.length;
         String[] output = new String[STRING_COUNT];
         
@@ -62,20 +63,39 @@ public class StringListContainer {
 
         final int STRING_COUNT = input.length;
         String[] output = new String[STRING_COUNT];
+
+        String[] splitValues = modValues.split(":");
+        int digits = splitValues[0].length();
+        String startRaw = splitValues[1];
         
         boolean isValid = true;
         int start = 0;
         
         
         try { 
-            start = Integer.parseInt(modValues); 
+            start = Integer.parseInt(startRaw); 
+            
         } catch(NumberFormatException e) { 
             isValid = false;
+            
         }
+        String startOut = "";
         
         if(isValid){
             for(int c = 0; c < STRING_COUNT; c++){
-                output[c] = input[c] + modValues;
+                startOut = start + "";
+                if( startOut.length() < digits){
+                    int difference = digits - startOut.length() ;
+                    
+                    for( int d = 0; d < difference; d++){
+                        startOut = "0" + startOut;
+                    }
+                    
+                }
+                
+                
+                output[c] = input[c] + startOut;
+                start++;
             }
         }
         
@@ -92,33 +112,32 @@ public class StringListContainer {
      */
     private String[] actSubstring(String[] input, String modValues){
 
-        final int STRING_COUNT = input.length;
-        String[] output = new String[STRING_COUNT];
+        final int STRING_COUNT = this.stringList.length;
+        String[] localOutput = new String[STRING_COUNT];
         
         boolean isValid = true;
-        String[] counterLimits= modValues.split(":");
-        int maxLength = counterLimits[0].length();
+        String[] stringLimits= modValues.split(":");
         int start = 0;
         int end = 100;
         
         
         try { 
-            start = Integer.parseInt(counterLimits[0]); 
+            start = Integer.parseInt(stringLimits[0]); 
         } catch(NumberFormatException e) { 
             isValid = false;
         }
         try { 
-            end = Integer.parseInt(counterLimits[1]); 
+            end = Integer.parseInt(stringLimits[1]); 
         } catch(NumberFormatException e) { 
             isValid = false;
         }
         
-        
-        for(int c = 0; c < STRING_COUNT; c++){
-            output[c] = input[c] + modValues;
+        if(isValid){
+            for(int c = 0; c < STRING_COUNT; c++){
+                localOutput[c] = input[c] + this.stringList[c].substring(start,end);
+            }
         }
-        
-        return output;
+        return localOutput;
     }
 
 
@@ -146,19 +165,32 @@ public class StringListContainer {
     }
     
     public String[] getModStringList(){
+
+        final int STRING_COUNT = stringList.length;
         
-        String[] output = this.stringList;
-        
+        String[] output = new String[STRING_COUNT];
+
+        for(int c = 0; c < STRING_COUNT; c++){
+            output[c] = "";
+        }
         
         for(int c = 0; c < 5; c++){
             switch(modActions[c].charAt(0)){
             
                 case '0':
-                    output = this.actPrefix(output, modActions[c].substring(1));
+                    output = this.actString(output, modActions[c].substring(1));
                     break;
 
                 case '1':
                     output = this.actSuffix(output, modActions[c].substring(1));
+                    break;
+
+                case '2':
+                    output = this.actCounter(output, modActions[c].substring(1));
+                    break;
+
+                case '3':
+                    output = this.actSubstring(output, modActions[c].substring(1));
                     break;
                     
                 default:

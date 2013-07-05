@@ -4,10 +4,12 @@ public class Renamer {
 
     //--Field Declarations
     public static int runMode = 0; // 0 = Normal/GUI 1 = CLI 2 = Demo Mode
+    public static StringListContainer stringListContainer;
+    public static String folderPath;
     public static String demoEntries[] = {
-        "the quick brown fox jumps over the lazy dog",
-        "abcdefghijklmnopqrstuvwxyz",
-        "lorem ipsum dolor sit amet"
+        "the quick brown fox jumps over the lazy dog.mp3",
+        "abcdefghijklmnopqrstuvwxyz.DOCX",
+        "lorem ipsum dolor sit amet.gif"
     };
     
     
@@ -19,6 +21,15 @@ public class Renamer {
         //--Object Declarations
         
         switch(Renamer.runMode){
+            
+            case 0:
+
+                stringListContainer = new StringListContainer();
+                
+                //--Create window
+                RenamerGui window = new RenamerGui();
+                break;
+            
             case 2:
                 String[] moddedNames;
                 int numNames = demoEntries.length;
@@ -27,19 +38,15 @@ public class Renamer {
                     "Renamer Demo Mode" + "\n" +
                     "--------------------------------------------------------------------------" + "\n"
                 );
-                
-                StringListContainer stringList = new StringListContainer(demoEntries);
-                moddedNames = stringList.getModStringList();
-                System.out.println("Start Strings:" + "\n");
-                
-                for(int c = 0; c < numNames; c++){
 
-                    System.out.println(moddedNames[c]);
-                }
+                stringListContainer = new StringListContainer();
+                stringListContainer.setFolder(demoEntries);
+                
+                moddedNames = stringListContainer.getModStringList();
                 System.out.println( "\n" +  "\n");
 
-                stringList.addAction(0, "IMG");
-                moddedNames = stringList.getModStringList();
+                stringListContainer.addAction(0, "IMG");
+                moddedNames = stringListContainer.getModStringList();
 
                 System.out.println("Added Strings:" + "\n");
                 for(int c = 0; c < numNames; c++){
@@ -47,18 +54,20 @@ public class Renamer {
                     System.out.println(moddedNames[c]);
                 }
 
-                stringList.addAction(2, "0000:1");
-                moddedNames = stringList.getModStringList();
+                stringListContainer.addAction(2, "0000/1");
+                moddedNames = stringListContainer.getModStringList();
 
+                System.out.println( "\n" +  "\n");
                 System.out.println("Added Counter:" + "\n");
                 for(int c = 0; c < numNames; c++){
 
                     System.out.println(moddedNames[c]);
                 }
 
-                stringList.addAction(0, " - ");
-                moddedNames = stringList.getModStringList();
+                stringListContainer.addAction(0, " - ");
+                moddedNames = stringListContainer.getModStringList();
 
+                System.out.println( "\n" +  "\n");
                 System.out.println("Added Strings:" + "\n");
                 for(int c = 0; c < numNames; c++){
 
@@ -67,10 +76,21 @@ public class Renamer {
                 
                 System.out.println( "\n" +  "\n");
 
-                stringList.addAction(3, "0:10");
-                moddedNames = stringList.getModStringList();
+                stringListContainer.addAction(3, "0/10");
+                moddedNames = stringListContainer.getModStringList();
 
+                System.out.println( "\n" +  "\n");
                 System.out.println("Added Substrings:" + "\n");
+                for(int c = 0; c < numNames; c++){
+
+                    System.out.println(moddedNames[c]);
+                }
+
+                stringListContainer.addAction(1, "e/[Best Letter Here]");
+                moddedNames = stringListContainer.getModStringList();
+
+                System.out.println( "\n" +  "\n");
+                System.out.println("Replaced the letter 'e':" + "\n");
                 for(int c = 0; c < numNames; c++){
 
                     System.out.println(moddedNames[c]);
@@ -82,8 +102,6 @@ public class Renamer {
                 break;
         }
         
-        
-        System.exit(0);
     }
     
     

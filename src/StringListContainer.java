@@ -3,12 +3,50 @@ public class StringListContainer {
     
 
     //--Field Declarations
-    String[] modActions = {"none","none","none","none","none"};
+    public static final int NUM_OF_ACTIONS = 10;
+    String[] modActions = new String[NUM_OF_ACTIONS];
     String stringList[];
+    String extensionList[];
     
-    public StringListContainer(String[] rawStrings){
+    public StringListContainer(){
+
+        //--Set default action values
+        for(int c = 0; c < NUM_OF_ACTIONS; c++){
+            modActions[c] = "none";
+        }
         
-        stringList = rawStrings;
+        String[] emptyFolder = {
+                "the quick brown fox jumps over the lazy dog.mp3",
+                "abcdefghijklmnopqrstuvwxyz.DOCX",
+                "lorem ipsum dolor sit amet.gif"
+            };
+        setFolder(emptyFolder);
+    }
+    
+    public void setFolder(String[] rawStrings){
+        
+
+        final int STRING_COUNT = rawStrings.length;
+        extensionList = new String[STRING_COUNT];
+        stringList = new String[STRING_COUNT];
+
+        
+        //--Get filenames and extensions
+        for(int c = 0; c < STRING_COUNT; c++){
+            
+            if( rawStrings[c].contains(".") ){
+                extensionList[c] = "." + rawStrings[c].split("\\.")[ rawStrings[c].split("\\.").length-1 ];
+                stringList[c] = (String) rawStrings[c].subSequence(0, rawStrings[c].length() - extensionList[c].length()-1 );
+            }else{
+                extensionList[c] = "";
+                stringList[c] = rawStrings[c];
+            }
+            
+            
+
+        }
+        
+        
     }
     
     /* actString
@@ -24,28 +62,29 @@ public class StringListContainer {
         String[] output = new String[STRING_COUNT];
         
         for(int c = 0; c < STRING_COUNT; c++){
-            output[c] = input[c] + modValues;
+            output[c] = input[c] + modValues.replace("/", "");
         }
         
         return output;
     }
 
     
-    /* actSufix
+    /* actReplace
      * 
      * Adds a string as a suffix
      * 
      * ID: 1
      * 
      */
-    private String[] actSuffix(String[] input, String modValues){
+    private String[] actReplace(String[] input, String modValues){
         
         
         final int STRING_COUNT = input.length;
         String[] output = new String[STRING_COUNT];
+        String[] splitValues = modValues.split("/");
         
         for(int c = 0; c < STRING_COUNT; c++){
-            output[c] = input[c] + modValues;
+            output[c] = input[c].replace(splitValues[0], splitValues[1]);
         }
         
         return output;
@@ -64,7 +103,7 @@ public class StringListContainer {
         final int STRING_COUNT = input.length;
         String[] output = new String[STRING_COUNT];
 
-        String[] splitValues = modValues.split(":");
+        String[] splitValues = modValues.split("/");
         int digits = splitValues[0].length();
         String startRaw = splitValues[1];
         
@@ -116,7 +155,7 @@ public class StringListContainer {
         String[] localOutput = new String[STRING_COUNT];
         
         boolean isValid = true;
-        String[] stringLimits= modValues.split(":");
+        String[] stringLimits= modValues.split("/");
         int start = 0;
         int end = 100;
         
@@ -132,9 +171,13 @@ public class StringListContainer {
             isValid = false;
         }
         
+        int tempEnd = end;
         if(isValid){
             for(int c = 0; c < STRING_COUNT; c++){
-                localOutput[c] = input[c] + this.stringList[c].substring(start,end);
+                tempEnd = end;
+                if(end > stringList[c].length() ){tempEnd = stringList[c].length();}
+                
+                localOutput[c] = input[c] + this.stringList[c].substring(start,tempEnd);
             }
         }
         return localOutput;
@@ -150,7 +193,7 @@ public class StringListContainer {
     public void addAction(int actionID, String actionValue){
 
         boolean notAdded = true;
-        for(int c = 0; c < 5; c++){
+        for(int c = 0; c < NUM_OF_ACTIONS; c++){
             
             if(notAdded){
                 if(modActions[c] == "none"){
@@ -163,7 +206,37 @@ public class StringListContainer {
         }
         
     }
+
     
+    /* setAction
+     * 
+     * Sets an action to the string modifier list
+     * 
+     */
+    public void setAction(int actionListID, int actionID, String actionValue){
+
+        boolean isValid = true;
+        if( !(actionListID < NUM_OF_ACTIONS) ){ isValid = false; }
+        String[] stringLimits= actionValue.split("/");
+        if( stringLimits[0].trim() == "" ){ isValid = false; }
+        if(stringLimits.length>1){
+            if( stringLimits[1].trim() == "" ){ isValid = false; }
+        }
+        
+        if(isValid){
+                
+                modActions[actionListID] = actionID + actionValue;
+        }
+        
+    }
+
+
+    
+    /* getModStringList
+     * 
+     * Returns list of moddified Strings
+     * 
+     */
     public String[] getModStringList(){
 
         final int STRING_COUNT = stringList.length;
@@ -174,7 +247,7 @@ public class StringListContainer {
             output[c] = "";
         }
         
-        for(int c = 0; c < 5; c++){
+        for(int c = 0; c < NUM_OF_ACTIONS; c++){
             switch(modActions[c].charAt(0)){
             
                 case '0':
@@ -182,7 +255,7 @@ public class StringListContainer {
                     break;
 
                 case '1':
-                    output = this.actSuffix(output, modActions[c].substring(1));
+                    output = this.actReplace(output, modActions[c].substring(1));
                     break;
 
                 case '2':
@@ -199,6 +272,28 @@ public class StringListContainer {
             
         }
         
+        //--Build Final output
+        for(int c = 0; c < STRING_COUNT; c++){
+            output[c] = output[c] + extensionList[c];
+        }
+        return output;
+    }
+    
+    
+    /* getStringList
+     * 
+     * Returns list of original Strings
+     * 
+     */
+    public String[] getStringList(){
+        
+        final int STRING_COUNT = stringList.length;
+
+        String[] output = new String[STRING_COUNT];
+
+        for(int c = 0; c < STRING_COUNT; c++){
+            output[c] = stringList[c] + extensionList[c];
+        }
         return output;
     }
 }

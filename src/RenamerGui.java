@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -17,15 +19,20 @@ public class RenamerGui extends JFrame{
     private JMenuBar mainMenu;
     private JMenu mainMenuFile;
     private JMenuItem mainMenuFileOpen;
+    private JMenuItem mainMenuFileRevert;
     private JMenuItem mainMenuFileExit;
+    private JMenu mainMenuAction;
+    private JMenuItem mainMenuActionRename;
 
     private JComboBox[]  actionID;
     private JTextField[] actionInput1;
     private JTextField[] actionInput2;
 
     private JLabel originalNameLabel;
+    private JScrollPane originalNameScrollPane;
     private JList originalNameList;
     private JLabel newNameLabel;
+    private JScrollPane newNameScrollPane;
     private JList newNameList;
     
     private String[] actionList = {
@@ -61,6 +68,7 @@ public class RenamerGui extends JFrame{
         //--Show Window
         setVisible(true);
         
+        
     }
     
     /**buildMainPanel
@@ -74,12 +82,29 @@ public class RenamerGui extends JFrame{
         mainMenu = new JMenuBar();
         mainMenuFile = new JMenu("File");
         mainMenuFileOpen = new JMenuItem("Open Folder");
+        mainMenuFileRevert = new JMenuItem("Revert");
         mainMenuFileExit = new JMenuItem("Exit");
+        mainMenuFileOpen.addActionListener(new OpenListener());
+        mainMenuFileRevert.addActionListener(new RevertListener());
+        mainMenuFileExit.addActionListener(new ExitListener());
         
         mainMenuFile.add(mainMenuFileOpen);
+        mainMenuFile.add(mainMenuFileRevert);
+        mainMenuFile.addSeparator();
         mainMenuFile.add(mainMenuFileExit);
-
+        
         mainMenu.add(mainMenuFile);
+
+        mainMenuAction = new JMenu("Action");
+        mainMenuActionRename = new JMenuItem("Rename");
+        mainMenuActionRename.addActionListener(new RenameListener());
+        
+        mainMenuAction.add(mainMenuActionRename);
+        
+        mainMenu.add(mainMenuFile);
+        mainMenu.add(mainMenuAction);
+        
+        
         setJMenuBar(mainMenu);
         
         //--Create Panels
@@ -104,6 +129,7 @@ public class RenamerGui extends JFrame{
      */
     private void buildInputPanel(){
         inputPanel = new JPanel();
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5) );
         inputPanel.setLayout( new GridLayout(StringListContainer.NUM_OF_ACTIONS,3) );
         int numActionList = actionList.length;
         
@@ -112,6 +138,7 @@ public class RenamerGui extends JFrame{
             
             for(int d = 0;d < numActionList; d++){
                 actionID[c] = new JComboBox(actionList);
+                actionID[c].addActionListener( new ActionChangeListener() );
             }
         }
         
@@ -140,12 +167,16 @@ public class RenamerGui extends JFrame{
      */
     private void buildOriginalPanel(){
         originalPanel = new JPanel();
+        originalPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0) );
+        originalPanel.setLayout( new BorderLayout() );
         
         originalNameLabel =    new JLabel("Orginal Names");
         originalNameList = new JList(Renamer.stringListContainer.getStringList());
-        
-        originalPanel.add(originalNameLabel);
-        originalPanel.add(originalNameList);
+
+        originalNameScrollPane = new JScrollPane(originalNameList);
+        originalNameScrollPane.setBorder(BorderFactory.createLoweredBevelBorder() );
+        originalPanel.add(originalNameLabel,BorderLayout.NORTH);
+        originalPanel.add(originalNameScrollPane,BorderLayout.CENTER);
     }
     
     /**buildMainPanel
@@ -155,12 +186,15 @@ public class RenamerGui extends JFrame{
      */
     private void buildPreviewPanel(){
         previewPanel = new JPanel();
+        previewPanel.setLayout( new BorderLayout() );
 
         newNameLabel =    new JLabel("New Names");
         newNameList = new JList(Renamer.stringListContainer.getModStringList());
-        
-        previewPanel.add(newNameLabel);
-        previewPanel.add(newNameList);
+
+        newNameScrollPane = new JScrollPane(newNameList);
+        newNameScrollPane.setBorder(BorderFactory.createLoweredBevelBorder() );
+        previewPanel.add(newNameLabel,BorderLayout.NORTH);
+        previewPanel.add(newNameScrollPane,BorderLayout.CENTER);
         
     }
     
@@ -213,6 +247,106 @@ public class RenamerGui extends JFrame{
             
             newNameList.setListData(Renamer.stringListContainer.getModStringList());
             
+        }
+    }
+    
+    /**ActionChangeListener
+     * 
+     * Updates lists if the action changes
+     * 
+     */
+    private class ActionChangeListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            //--Field Declarations
+            String[] actionValues = new String[StringListContainer.NUM_OF_ACTIONS];
+            
+            //--Collect Values
+            for(int c = 0;c<StringListContainer.NUM_OF_ACTIONS;c++){
+                if(actionID[c].getSelectedIndex() != 0){
+                    actionValues[c] = actionInput1[c].getText() + "/" + actionInput2[c].getText();
+                }
+            }
+            
+            //--Set Actions
+            for(int c = 0;c<StringListContainer.NUM_OF_ACTIONS;c++){
+                if(actionID[c].getSelectedIndex() != 0){
+                    Renamer.stringListContainer.setAction(c, actionID[c].getSelectedIndex()-1, actionValues[c]);
+                }
+            }
+            
+            originalNameList.setListData(Renamer.stringListContainer.getStringList());
+            newNameList.setListData(Renamer.stringListContainer.getModStringList());
+        }
+    }
+    
+    
+    /**ExitListener
+     * 
+     * Exits Application
+     * 
+     */
+    private class ExitListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            System.exit(0);
+        }
+    }
+    
+    
+    /**OpenListener
+     * 
+     * Opens folder and sends it to the StringListContatainer
+     * 
+     */
+    private class OpenListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            JFileChooser openFolder = new JFileChooser();
+            openFolder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            
+            int status = openFolder.showOpenDialog(null);
+            if(status == openFolder.APPROVE_OPTION){
+                File newfolder = openFolder.getSelectedFile();
+                Renamer.stringListContainer.setFolder(newfolder.getPath());
+                
+                originalNameList.setListData(Renamer.stringListContainer.getStringList());
+                newNameList.setListData(Renamer.stringListContainer.getModStringList());
+            }
+        }
+    }
+    
+    
+    /**RenameListener
+     * 
+     * Opens folder and sends it to the StringListContatainer
+     * 
+     */
+    private class RenameListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            
+            Renamer.stringListContainer.commitNames();
+
+            originalNameList.setListData(Renamer.stringListContainer.getStringList());
+            newNameList.setListData(Renamer.stringListContainer.getModStringList());
+        }
+    }
+    
+    
+    /**RevertListener
+     * 
+     * Opens folder and sends it to the StringListContatainer
+     * 
+     */
+    private class RevertListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            
+            Renamer.stringListContainer.revertNames();
+
+            originalNameList.setListData(Renamer.stringListContainer.getStringList());
+            newNameList.setListData(Renamer.stringListContainer.getModStringList());
         }
     }
 }

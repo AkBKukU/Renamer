@@ -4,6 +4,7 @@ public class Renamer {
 
     //--Field Declarations
     public static int runMode = 0; // 0 = Normal/GUI 1 = CLI 2 = Demo Mode
+    public static RenamerGui window;
     public static StringListContainer stringListContainer;
     public static String folderPath;
     public static String demoEntries[] = {
@@ -27,7 +28,7 @@ public class Renamer {
                 stringListContainer = new StringListContainer();
                 
                 //--Create window
-                RenamerGui window = new RenamerGui();
+                window = new RenamerGui();
                 break;
             
             case 2:
@@ -40,7 +41,6 @@ public class Renamer {
                 );
 
                 stringListContainer = new StringListContainer();
-                stringListContainer.setFolder(demoEntries);
                 
                 moddedNames = stringListContainer.getModStringList();
                 System.out.println( "\n" +  "\n");

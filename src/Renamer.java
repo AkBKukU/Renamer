@@ -16,13 +16,13 @@ public class Renamer {
     
     public static void main(String[] args){
 
-        //--Field Declarations
+        //--Parse Arguments
         parseArgs(args);
         
-        //--Object Declarations
-        
+        //--Determine which way to run
         switch(Renamer.runMode){
             
+            //--Standard GUI Mode
             case 0:
 
                 stringListContainer = new StringListContainer();
@@ -31,6 +31,7 @@ public class Renamer {
                 window = new RenamerGui();
                 break;
             
+            //--Runs demo mode which shows modifications in console using the files in the current directory
             case 2:
                 String[] moddedNames;
                 int numNames = demoEntries.length;
@@ -39,12 +40,12 @@ public class Renamer {
                     "Renamer Demo Mode" + "\n" +
                     "--------------------------------------------------------------------------" + "\n"
                 );
-
-                stringListContainer = new StringListContainer();
                 
+                //--Load modifier class
+                stringListContainer = new StringListContainer();
                 moddedNames = stringListContainer.getModStringList();
-                System.out.println( "\n" +  "\n");
-
+                
+                //--Add 'IMG' to output
                 stringListContainer.addAction(0, "IMG");
                 moddedNames = stringListContainer.getModStringList();
 
@@ -54,6 +55,7 @@ public class Renamer {
                     System.out.println(moddedNames[c]);
                 }
 
+                //--Add a four digit counter
                 stringListContainer.addAction(2, "0000/1");
                 moddedNames = stringListContainer.getModStringList();
 
@@ -64,6 +66,7 @@ public class Renamer {
                     System.out.println(moddedNames[c]);
                 }
 
+                //--Add ' - ' to output
                 stringListContainer.addAction(0, " - ");
                 moddedNames = stringListContainer.getModStringList();
 
@@ -73,9 +76,8 @@ public class Renamer {
 
                     System.out.println(moddedNames[c]);
                 }
-                
-                System.out.println( "\n" +  "\n");
 
+                //--Add substring of the filename to the output
                 stringListContainer.addAction(3, "0/10");
                 moddedNames = stringListContainer.getModStringList();
 
@@ -86,6 +88,7 @@ public class Renamer {
                     System.out.println(moddedNames[c]);
                 }
 
+                //--Replace the letter 'e' in the output
                 stringListContainer.addAction(1, "e/[Best Letter Here]");
                 moddedNames = stringListContainer.getModStringList();
 
@@ -121,7 +124,7 @@ public class Renamer {
             
             switch(args[c]){
                 
-                //--Check for demo mode and get string input
+                //--Check for demo mode
                 case "-d":
                 case "--demo":
                     Renamer.runMode = 2;
@@ -133,7 +136,8 @@ public class Renamer {
                             "Usage: java Renamer [OPTIONS]" + "\n" +
                             "Batch file renaming utility" + "\n" +
                             "  -d, --demo                 Run program in demo mode. Shows many functions" + "\n" + 
-                            "                             it can do in console" + "\n" +
+                            "                             it can do in console using files in current" + "\n" + 
+                            "                             directory. Does not write changes." + "\n" +
                             "  --help                     Display this help sheet"
                     );
                     System.exit(0);

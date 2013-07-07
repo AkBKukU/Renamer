@@ -1,0 +1,18 @@
+name:English ALT
+by:Shelby Jueden
+
+actionList: Blank,Text,Substitute,Counter,Section
+
+mainMenuFileText: File
+mainMenuFileOpen: Select Folder
+mainMenuFileRevert: Return to Stock 
+mainMenuFileExit: Close
+
+mainMenuActionText: Rename
+mainMenuActionRename: Commit
+
+originalNameLabel: Start Names
+newNameLabel: End Names
+
+mainMenuSettingsText: Configuration
+mainMenuSettingsLanguagesText: Languages

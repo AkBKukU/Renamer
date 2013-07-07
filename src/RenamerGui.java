@@ -23,6 +23,10 @@ public class RenamerGui extends JFrame{
     private JMenuItem mainMenuFileExit;
     private JMenu mainMenuAction;
     private JMenuItem mainMenuActionRename;
+    private JMenu mainMenuSettings;
+    private JMenu mainMenuLanguages;
+    private JRadioButtonMenuItem[] languagesButtons;
+    private ButtonGroup languagesButtonsGroup;
 
     private JComboBox[]  actionID;
     private JTextField[] actionInput1;
@@ -35,13 +39,29 @@ public class RenamerGui extends JFrame{
     private JScrollPane newNameScrollPane;
     private JList newNameList;
     
-    private String[] actionList = {
-                            "None",
-                            "Add String",
-                            "Replace",
-                            "Counter",
-                            "Substring"
-                        };
+
+    
+    //--Gui Language items
+    private String userLanguage;
+    private int userLanguageIndex;
+    private String[] languages;
+    private String[] languagesFilesList;
+    
+    private String actionListText;
+    
+    private String mainMenuFileText;
+    private String mainMenuFileOpenText;
+    private String mainMenuFileRevertText;
+    private String mainMenuFileExitText;
+    
+    private String mainMenuActionText;
+    private String mainMenuActionRenameText;
+    
+    private String mainMenuSettingsText;
+    private String mainMenuSettingsLanguagesText;
+    
+    private String originalNameLabelText;
+    private String newNameLabelText;
     
     /**CalcWindow
      * 
@@ -50,9 +70,13 @@ public class RenamerGui extends JFrame{
      */
     public RenamerGui(){
         
+        
         //--Set title
         super("Renamer");
 
+        //--Load text
+        loadLanguage();
+        
         //--Field Declarations
         final int   WINX = 700,
                     WINY = 400;
@@ -80,10 +104,10 @@ public class RenamerGui extends JFrame{
         
         //--Build Menu
         mainMenu = new JMenuBar();
-        mainMenuFile = new JMenu("File");
-        mainMenuFileOpen = new JMenuItem("Open Folder");
-        mainMenuFileRevert = new JMenuItem("Revert");
-        mainMenuFileExit = new JMenuItem("Exit");
+        mainMenuFile = new JMenu(mainMenuFileText);
+        mainMenuFileOpen = new JMenuItem(mainMenuFileOpenText);
+        mainMenuFileRevert = new JMenuItem(mainMenuFileRevertText);
+        mainMenuFileExit = new JMenuItem(mainMenuFileExitText);
         mainMenuFileOpen.addActionListener(new OpenListener());
         mainMenuFileRevert.addActionListener(new RevertListener());
         mainMenuFileExit.addActionListener(new ExitListener());
@@ -95,14 +119,32 @@ public class RenamerGui extends JFrame{
         
         mainMenu.add(mainMenuFile);
 
-        mainMenuAction = new JMenu("Action");
-        mainMenuActionRename = new JMenuItem("Rename");
+        mainMenuAction = new JMenu(mainMenuActionText);
+        mainMenuActionRename = new JMenuItem(mainMenuActionRenameText);
         mainMenuActionRename.addActionListener(new RenameListener());
         
         mainMenuAction.add(mainMenuActionRename);
+
+        mainMenuSettings = new JMenu(mainMenuSettingsText);
+        
+        mainMenuLanguages = new JMenu(mainMenuSettingsLanguagesText);
+
+        languagesButtons = new JRadioButtonMenuItem[languages.length];
+        languagesButtonsGroup = new ButtonGroup();
+        for(int c = 0;c < languages.length; c++){
+            languagesButtons[c] = new JRadioButtonMenuItem(languages[c]);
+            languagesButtons[c].addActionListener(new LanguageListener());
+            if(c == userLanguageIndex){
+                languagesButtons[c].setSelected(true);
+            }
+            languagesButtonsGroup.add(languagesButtons[c]);
+            mainMenuLanguages.add(languagesButtons[c]);
+        }
+        mainMenuSettings.add(mainMenuLanguages);
         
         mainMenu.add(mainMenuFile);
         mainMenu.add(mainMenuAction);
+        mainMenu.add(mainMenuSettings);
         
         
         setJMenuBar(mainMenu);
@@ -129,15 +171,15 @@ public class RenamerGui extends JFrame{
      */
     private void buildInputPanel(){
         inputPanel = new JPanel();
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5) );
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3) );
         inputPanel.setLayout( new GridLayout(StringListContainer.NUM_OF_ACTIONS,3) );
-        int numActionList = actionList.length;
+        int numActionList = actionListText.split(",").length;
         
         actionID =    new JComboBox[StringListContainer.NUM_OF_ACTIONS];
         for(int c = 0;c<StringListContainer.NUM_OF_ACTIONS;c++){
             
             for(int d = 0;d < numActionList; d++){
-                actionID[c] = new JComboBox(actionList);
+                actionID[c] = new JComboBox( actionListText.split(",") );
                 actionID[c].addActionListener( new ActionChangeListener() );
             }
         }
@@ -167,10 +209,12 @@ public class RenamerGui extends JFrame{
      */
     private void buildOriginalPanel(){
         originalPanel = new JPanel();
-        originalPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0) );
+        originalPanel.setBorder(BorderFactory.createEmptyBorder(3,0,3,0) );
         originalPanel.setLayout( new BorderLayout() );
         
-        originalNameLabel =    new JLabel("Orginal Names");
+        originalNameLabel =    new JLabel(originalNameLabelText);
+        originalNameLabel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
+        originalNameLabel.setHorizontalAlignment( SwingConstants.CENTER );
         originalNameList = new JList(Renamer.stringListContainer.getStringList());
 
         originalNameScrollPane = new JScrollPane(originalNameList);
@@ -186,9 +230,12 @@ public class RenamerGui extends JFrame{
      */
     private void buildPreviewPanel(){
         previewPanel = new JPanel();
+        previewPanel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3) );
         previewPanel.setLayout( new BorderLayout() );
 
-        newNameLabel =    new JLabel("New Names");
+        newNameLabel =    new JLabel(newNameLabelText);
+        newNameLabel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
+        newNameLabel.setHorizontalAlignment( SwingConstants.CENTER );
         newNameList = new JList(Renamer.stringListContainer.getModStringList());
 
         newNameScrollPane = new JScrollPane(newNameList);
@@ -348,5 +395,181 @@ public class RenamerGui extends JFrame{
             originalNameList.setListData(Renamer.stringListContainer.getStringList());
             newNameList.setListData(Renamer.stringListContainer.getModStringList());
         }
+    }
+    
+    
+    /**LanguageListener
+     * 
+     * Loads a new language and saves it to settings
+     * 
+     */
+    private class LanguageListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            
+            int newLangIndex = 0;
+            
+            for(int c = 0;c < languages.length; c++){
+                if(languagesButtons[c].isSelected()){
+                    newLangIndex = c;
+                }
+            }
+
+            //--Get starting directory
+            String stDir = System.getProperty("user.dir");
+
+            //--Check settings file for preferred language
+            File settingsFile = new File(stDir + File.separator + "settings.cfg");
+            
+            try {
+                PrintWriter saveLang = new PrintWriter(settingsFile.getPath());
+                
+                saveLang.println( "lang: " + languagesFilesList[newLangIndex].replace(".lang", "") );
+                saveLang.close();
+            } catch (FileNotFoundException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            
+            loadLanguage();
+
+            
+            mainMenuFile.setText(mainMenuFileText);
+            mainMenuFileOpen.setText(mainMenuFileOpenText);
+            mainMenuFileRevert.setText(mainMenuFileRevertText);
+            mainMenuFileExit.setText(mainMenuFileExitText);
+            
+            mainMenuAction.setText(mainMenuActionText);
+            mainMenuActionRename.setText(mainMenuActionRenameText);
+            
+            originalNameLabel.setText(originalNameLabelText);
+            newNameLabel.setText(newNameLabelText);
+
+            mainMenuSettings.setText(mainMenuSettingsText);
+            
+            
+        }
+    }
+    
+    
+    
+    /**loadLanguage
+     * 
+     * Loads the strings for the selected language
+     * 
+     */
+    private void loadLanguage(){
+        
+        //--Load check
+        boolean loaded = false;
+
+        //--Get starting directory
+        String stDir = System.getProperty("user.dir");
+
+        //--Check settings file for preferred language
+        File settingsFile = new File(stDir + File.separator + "settings.cfg");
+        ConfigHandler settingsConfig;
+        
+        if(settingsFile.exists()){
+            try {
+                settingsConfig = new ConfigHandler(settingsFile.getPath());
+                userLanguage = settingsConfig.getValueFor("lang");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+        }
+        
+        //--Get list of language files
+        File folderFile = new File(stDir + File.separator + "lang");
+        File[] files = folderFile.listFiles();
+
+        int FILE_COUNT = files.length;
+        languages = new String[FILE_COUNT];
+        
+        languagesFilesList = new String[FILE_COUNT];
+        
+        for(int c = 0; c < FILE_COUNT; c++){
+            if( files[c].isFile() ){
+                if(files[c].getName().endsWith(".lang")){
+                    languagesFilesList[c] = files[c].getName();
+                    if( languagesFilesList[c].equals(userLanguage+".lang") ){
+                        userLanguageIndex = c;
+                    }
+                }
+            }
+        }
+        
+        //--Create File loader object to load language pack
+        ConfigHandler languageFiles;
+        
+        try {
+            
+            for(int c = 0; c < languagesFilesList.length; c++){
+                languageFiles = new ConfigHandler(stDir + File.separator + "lang" + File.separator + languagesFilesList[c]);
+                
+                languages[c] = languageFiles.getValueFor("name");
+                
+                if( languagesFilesList[c].equals(userLanguage+".lang") ){
+
+                    actionListText =            languageFiles.getValueFor("actionList");
+                    
+                    mainMenuFileText =          languageFiles.getValueFor("mainMenuFileText");
+                    mainMenuFileOpenText =      languageFiles.getValueFor("mainMenuFileOpen");
+                    mainMenuFileRevertText =    languageFiles.getValueFor("mainMenuFileRevert");
+                    mainMenuFileExitText =      languageFiles.getValueFor("mainMenuFileExit");
+                    
+                    mainMenuActionText =        languageFiles.getValueFor("mainMenuActionText");
+                    mainMenuActionRenameText =  languageFiles.getValueFor("mainMenuActionRename");
+                    
+                    originalNameLabelText =     languageFiles.getValueFor("originalNameLabel");
+                    newNameLabelText =          languageFiles.getValueFor("newNameLabel");
+
+                    mainMenuSettingsText = languageFiles.getValueFor("mainMenuSettingsText");
+                    mainMenuSettingsLanguagesText = languageFiles.getValueFor("mainMenuSettingsLanguagesText");
+                    loaded = true;
+                }
+                
+            }
+
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        if( !(loaded) ){
+            defaultEnglish();
+            
+        }
+        
+    }
+
+    
+    /**defaultEnglish
+     * 
+     * Loads the strings for en-us.
+     * 
+     * Meant to be used as a last resort.
+     */
+    public void defaultEnglish(){
+        userLanguage = "en-us";
+
+        actionListText =            "None,Add String,Replace,Counter,Substring";
+        
+        mainMenuFileText =          "File";
+        mainMenuFileOpenText =      "Open Folder";
+        mainMenuFileRevertText =    "Revert";
+        mainMenuFileExitText =      "Exit";
+        
+        mainMenuActionText =        "Action";
+        mainMenuActionRenameText =  "Rename";
+        
+        originalNameLabelText =     "Original Names";
+        newNameLabelText =          "New Names";
+
+        mainMenuSettingsText = "Settings";
+        mainMenuSettingsLanguagesText = "Languages";
     }
 }

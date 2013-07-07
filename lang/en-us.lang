@@ -1,0 +1,18 @@
+name: English US
+by: Shelby Jueden
+
+actionList: None,Add String,Replace,Counter,Substring
+
+mainMenuFileText: File
+mainMenuFileOpen: Open Folder
+mainMenuFileRevert: Revert
+mainMenuFileExit: Exit
+
+mainMenuActionText: Action
+mainMenuActionRename: Rename
+
+originalNameLabel: Original Names
+newNameLabel: New Names
+
+mainMenuSettingsText: Settings
+mainMenuSettingsLanguagesText: Languages

@@ -21,13 +21,12 @@ public class StringListContainer {
         }
         
         
-        setFolder("noFolder");
+        setFolder(System.getProperty("user.dir"));
     }
     
     public void setFolder(String newFolder){
         
         folderPath = newFolder;
-        System.out.println("Folder Selected: " + folderPath);
 
         String[] rawStrings = {
                 "the quick brown fox jumps over the lazy dog.mp3",
@@ -35,34 +34,31 @@ public class StringListContainer {
                 "lorem ipsum dolor sit amet.gif"
             };
         
-        int STRING_COUNT = 3;
-        if(newFolder != "noFolder"){
-            STRING_COUNT = 0;
-            File folderFile = new File(newFolder);
-            File[] files = folderFile.listFiles();
+        int STRING_COUNT = 0;
+        File folderFile = new File(newFolder);
+        File[] files = folderFile.listFiles();
 
-            int FILE_COUNT = rawStrings.length;
-            FILE_COUNT = files.length;
-            
-            String[] directoryDump = new String[FILE_COUNT];
-            
-            for(int c = 0; c < FILE_COUNT; c++){
-                System.out.println("File: " + files[c].getPath() + " is " + files[c].isFile());
-                if( files[c].isFile() ){
-                    directoryDump[STRING_COUNT] = files[c].getName();
-                    STRING_COUNT++;
-                }
-            }
-            
-            if(STRING_COUNT < 0){STRING_COUNT = 0;}
-            
-            rawStrings = new String[STRING_COUNT];
-            for(int c = 0; c < STRING_COUNT; c++){
-                rawStrings[c] = directoryDump[c];
-                    
-                
+        int FILE_COUNT = rawStrings.length;
+        FILE_COUNT = files.length;
+        
+        String[] directoryDump = new String[FILE_COUNT];
+        
+        for(int c = 0; c < FILE_COUNT; c++){
+            if( files[c].isFile() ){
+                directoryDump[STRING_COUNT] = files[c].getName();
+                STRING_COUNT++;
             }
         }
+        
+        if(STRING_COUNT < 0){STRING_COUNT = 0;}
+        
+        rawStrings = new String[STRING_COUNT];
+        for(int c = 0; c < STRING_COUNT; c++){
+            rawStrings[c] = directoryDump[c];
+                
+            
+            }
+        
         
         Arrays.sort(rawStrings, String.CASE_INSENSITIVE_ORDER);
         
@@ -389,20 +385,14 @@ public class StringListContainer {
         
         final int STRING_COUNT = stringList.length;
         
-        //--Check what file delimiter based on the OS 
-        String OS = System.getProperty("os.name");
-        String fileDelim = "/";
-        if( OS.startsWith("Windows") ){
-            fileDelim = "\\";
-        }
 
         String[] originalNames = getStringList();
         String[] modNames = getModStringListPlain();
         String[] newNames = getModStringList();
 
         for(int c = 0; c < STRING_COUNT; c++){
-            originalNames[c] = folderPath + fileDelim + originalNames[c];
-            newNames[c] = folderPath + fileDelim + newNames[c];
+            originalNames[c] = folderPath + File.separator + originalNames[c];
+            newNames[c] = folderPath + File.separator + newNames[c];
             // File (or directory) with old name
             File file = new File(originalNames[c]);
 
@@ -411,15 +401,9 @@ public class StringListContainer {
             
             
             if(file2.exists()){
-                System.out.println("file exists");
+                System.out.println("A " + file2.getName() + " already exists!");
             }
             
-            if(file.exists()){
-                System.out.println("Original file exists");
-            }else{
-
-                System.out.println("Not a file: " + originalNames[c]);
-            }
 
             // Rename file (or directory)
             boolean success = file.renameTo(file2);
@@ -441,19 +425,13 @@ public class StringListContainer {
         
         final int STRING_COUNT = stringList.length;
         
-        //--Check what file delimiter based on the OS 
-        String OS = System.getProperty("os.name");
-        String fileDelim = "/";
-        if( OS.startsWith("Windows") ){
-            fileDelim = "\\";
-        }
 
         String[] originalNames = getStringList();
         String[] newNames = new String[STRING_COUNT];
 
         for(int c = 0; c < STRING_COUNT; c++){
-            originalNames[c] = folderPath + fileDelim + originalNames[c];
-            newNames[c] = folderPath + fileDelim + hardList[c] + extensionList[c];
+            originalNames[c] = folderPath + File.separator + originalNames[c];
+            newNames[c] = folderPath + File.separator + hardList[c] + extensionList[c];
 
             // File (or directory) with old name
             File file = new File(originalNames[c]);
@@ -461,16 +439,9 @@ public class StringListContainer {
             // File (or directory) with new name
             File file2 = new File(newNames[c]);
             
-            
-            if(file2.exists()){
-                System.out.println("file exists");
-            }
-            
-            if(file.exists()){
-                System.out.println("Original file exists");
-            }else{
 
-                System.out.println("Not a file: " + originalNames[c]);
+            if(file2.exists()){
+                System.out.println("A " + file2.getName() + " already exists!");
             }
 
             // Rename file (or directory)

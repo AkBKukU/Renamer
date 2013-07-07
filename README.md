@@ -12,7 +12,7 @@ Renamer is written in Java using only built in packages so there is no platform 
 Language Packs
 --------------
 
-This program is designed to load all gui related text from language packs. To add a translation, open one of the other packs and change all the strings on the right. It would be awesome if you would submit your translations so others can enjoy the program in their native language. All I ask is that you include your name and the file you started with in the area in the file.
+This program is designed to load all gui related text from language packs. To add a translation, open one of the other packs and change all the strings on the right. It would be awesome if you would submit your translations so others can enjoy the program in their native language. All I ask is that you include your name and the file you started with in the area in the file. The packs go in the `lang` folder next to the binaries.
 
 ### Languages Supported ###
 

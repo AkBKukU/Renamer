@@ -1,10 +1,10 @@
 My exact goals will be:
-Load directory list from folder and filter folders
-Augment filename strings through five modifying stages (add string, counter from X to Y, Substring, and replacing)
-Provide preview of new filenames
-Write changes
-Do it all in a three pane jframe window
-Make source code available on github throughout development.
+DONE - Load directory list from folder and filter folders
+DONE - Augment filename strings through five modifying stages (add string, counter from X to Y, Substring, and replacing)
+DONE - Provide preview of new filenames
+DONE - Write changes
+DONE - Do it all in a three pane jframe window
+DONE - Make source code available on github throughout development.
 
 My extra goals will be:
 Command Line Interface version

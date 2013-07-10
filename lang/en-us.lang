@@ -1,5 +1,6 @@
 name: English US
 by: Shelby Jueden
+from: 
 
 actionList: None,Add String,Replace,Counter,Substring
 
@@ -16,3 +17,4 @@ newNameLabel: New Names
 
 mainMenuSettingsText: Settings
 mainMenuSettingsLanguagesText: Languages
+mainMenuSettingsAboutText: About

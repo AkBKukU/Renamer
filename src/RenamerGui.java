@@ -1,11 +1,11 @@
+
+
+/** Imports **/
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.event.*;
-
-
 
 
 public class RenamerGui extends JFrame{
@@ -30,6 +30,7 @@ public class RenamerGui extends JFrame{
     private JMenu mainMenuLanguages;
     private JRadioButtonMenuItem[] languagesButtons;
     private ButtonGroup languagesButtonsGroup;
+    private JMenuItem mainMenuSettingsAbout;
     
     //--Primary Inputs
     private JComboBox[]  actionID;
@@ -48,6 +49,8 @@ public class RenamerGui extends JFrame{
     
     //--Gui Language items
     private String userLanguage;
+    private String userLanguageAuthor;
+    private String userLanguageBase;
     private int userLanguageIndex;
     private String[] languages;
     private String[] languagesFilesList;
@@ -64,11 +67,12 @@ public class RenamerGui extends JFrame{
     
     private String mainMenuSettingsText;
     private String mainMenuSettingsLanguagesText;
+    private String mainMenuSettingsAboutText;
     
     private String originalNameLabelText;
     private String newNameLabelText;
     
-    /**CalcWindow
+    /**RenamerGui
      * 
      * Defines and displays the window
      * 
@@ -155,6 +159,10 @@ public class RenamerGui extends JFrame{
             mainMenuLanguages.add(languagesButtons[c]);
         }
         mainMenuSettings.add(mainMenuLanguages);
+        //--About
+        mainMenuSettingsAbout = new JMenuItem(mainMenuSettingsAboutText);
+        mainMenuSettingsAbout.addActionListener(new AboutListener());
+        mainMenuSettings.add(mainMenuSettingsAbout);
         
         //--Add all menus areas
         mainMenu.add(mainMenuFile);
@@ -416,6 +424,19 @@ public class RenamerGui extends JFrame{
     }
     
     
+    /**AboutListener
+     * 
+     * Exits Application
+     * 
+     */
+    private class AboutListener implements ActionListener{
+        
+        public void actionPerformed(ActionEvent e){
+            new AboutWindow();
+        }
+    }
+    
+    
     /**RevertListener
      * 
      * Opens folder and sends it to the StringListContatainer
@@ -502,7 +523,10 @@ public class RenamerGui extends JFrame{
     private void loadLanguage(){
         
         //--Load check
-        boolean loaded = false;
+        boolean notLoaded = true;
+        boolean settingsExist = false;
+        boolean langFolderExist = false;
+        boolean anyLangItemExist = false;
 
         //--Get starting directory
         String stDir = System.getProperty("user.dir");
@@ -516,6 +540,7 @@ public class RenamerGui extends JFrame{
             try {
                 settingsConfig = new ConfigHandler(settingsFile.getPath());
                 userLanguage = settingsConfig.getValueFor("lang");
+                settingsExist = true;
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -523,70 +548,86 @@ public class RenamerGui extends JFrame{
             
         }
         
-        //--Get list of language files
+        //--Check if the lang folder exists
         File folderFile = new File(stDir + File.separator + "lang");
-        File[] files = folderFile.listFiles();
-
-        int FILE_COUNT = files.length;
-        languages = new String[FILE_COUNT];
+        File[] files = new File[0];
+        if(folderFile.exists()){
+            files = folderFile.listFiles();
+            langFolderExist = true;
+        }
         
+        //--Check if there are any lang files and get list of them
+        int FILE_COUNT = 0;
+        if(langFolderExist){
+            FILE_COUNT = files.length;
+            anyLangItemExist = true;
+        }
+        
+        languages = new String[FILE_COUNT];
         languagesFilesList = new String[FILE_COUNT];
         
-        //--Get index of the users language
-        for(int c = 0; c < FILE_COUNT; c++){
-            if( files[c].isFile() ){
-                if(files[c].getName().endsWith(".lang")){
-                    languagesFilesList[c] = files[c].getName();
-                    if( languagesFilesList[c].equals(userLanguage+".lang") ){
-                        userLanguageIndex = c;
+        //--Get list of lang files and index of the users language
+        if(anyLangItemExist){
+            for(int c = 0; c < FILE_COUNT; c++){
+                if( files[c].isFile() ){
+                    if(files[c].getName().endsWith(".lang")){
+                        languagesFilesList[c] = files[c].getName();
+                        if(settingsExist && languagesFilesList[c].equals(userLanguage+".lang") ){
+                            userLanguageIndex = c;
+                        }
                     }
                 }
             }
         }
-        
         //--Create File loader object to load language packs
         ConfigHandler languageFiles;
         
+        //--Load default English in case of outdated language packs
+        defaultEnglish();
+        
         try {
-            
+
             //--Load each language pack at once
-            for(int c = 0; c < languagesFilesList.length; c++){
-                languageFiles = new ConfigHandler(stDir + File.separator + "lang" + File.separator + languagesFilesList[c]);
-                
-                //--Store name of language
-                languages[c] = languageFiles.getValueFor("name");
-                
-                //--If is the users language get the text values
-                if( languagesFilesList[c].equals(userLanguage+".lang") ){
-
-                    actionListText =            languageFiles.getValueFor("actionList");
+            if(anyLangItemExist){
+                for(int c = 0; c < languagesFilesList.length; c++){
+                    languageFiles = new ConfigHandler(stDir + File.separator + "lang" + File.separator + languagesFilesList[c]);
                     
-                    mainMenuFileText =          languageFiles.getValueFor("mainMenuFileText");
-                    mainMenuFileOpenText =      languageFiles.getValueFor("mainMenuFileOpen");
-                    mainMenuFileRevertText =    languageFiles.getValueFor("mainMenuFileRevert");
-                    mainMenuFileExitText =      languageFiles.getValueFor("mainMenuFileExit");
+                    //--Store name of language
+                    languages[c] = languageFiles.getValueFor("name");
                     
-                    mainMenuActionText =        languageFiles.getValueFor("mainMenuActionText");
-                    mainMenuActionRenameText =  languageFiles.getValueFor("mainMenuActionRename");
+                    //--If is the users language get the text values
+                    if(settingsExist && languagesFilesList[c].equals(userLanguage+".lang") ){
+                        userLanguageAuthor =        languageFiles.getValueFor("by");
+                        userLanguageBase =          languageFiles.getValueFor("from");
+                        
+                        actionListText =            languageFiles.getValueFor("actionList");
+                        
+                        mainMenuFileText =          languageFiles.getValueFor("mainMenuFileText");
+                        mainMenuFileOpenText =      languageFiles.getValueFor("mainMenuFileOpen");
+                        mainMenuFileRevertText =    languageFiles.getValueFor("mainMenuFileRevert");
+                        mainMenuFileExitText =      languageFiles.getValueFor("mainMenuFileExit");
+                        
+                        mainMenuActionText =        languageFiles.getValueFor("mainMenuActionText");
+                        mainMenuActionRenameText =  languageFiles.getValueFor("mainMenuActionRename");
+                        
+                        originalNameLabelText =     languageFiles.getValueFor("originalNameLabel");
+                        newNameLabelText =          languageFiles.getValueFor("newNameLabel");
+    
+                        mainMenuSettingsText = languageFiles.getValueFor("mainMenuSettingsText");
+                        mainMenuSettingsLanguagesText = languageFiles.getValueFor("mainMenuSettingsLanguagesText");
+                        notLoaded = false;
+                    }
                     
-                    originalNameLabelText =     languageFiles.getValueFor("originalNameLabel");
-                    newNameLabelText =          languageFiles.getValueFor("newNameLabel");
-
-                    mainMenuSettingsText = languageFiles.getValueFor("mainMenuSettingsText");
-                    mainMenuSettingsLanguagesText = languageFiles.getValueFor("mainMenuSettingsLanguagesText");
-                    loaded = true;
                 }
-                
-            }
 
-            
+            }
             
         } catch (IOException e) {
             e.printStackTrace();
         }
         
         //--If all else fails, load English from String Literals
-        if( !(loaded) ){
+        if( notLoaded ){
             defaultEnglish();
             
         }
@@ -601,7 +642,9 @@ public class RenamerGui extends JFrame{
      * Meant to be used as a last resort.
      */
     public void defaultEnglish(){
-        userLanguage = "en-us";
+        userLanguage =              "en-us";
+        userLanguageAuthor =        "Shelby Jueden";
+        userLanguageBase =          "Built in language";
 
         actionListText =            "None,Add String,Replace,Counter,Substring";
         
@@ -616,7 +659,8 @@ public class RenamerGui extends JFrame{
         originalNameLabelText =     "Current Names";
         newNameLabelText =          "New Names";
 
-        mainMenuSettingsText = "Settings";
+        mainMenuSettingsText =      "Settings";
         mainMenuSettingsLanguagesText = "Languages";
+        mainMenuSettingsAboutText= "About";
     }
 }

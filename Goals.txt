@@ -11,7 +11,7 @@ Command Line Interface version
 More modifiers (ie right to left substring, all caps/no caps, 
 Rename folders
 Multi level directory renaming
-Make a Jar version
+Kinda Done - Make a Jar version
 Compile binaries for Windows, Mac, and Linux
 
  

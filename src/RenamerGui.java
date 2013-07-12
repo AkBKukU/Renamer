@@ -187,9 +187,9 @@ public class RenamerGui extends JFrame{
         
     }
     
-    /**buildMainPanel
+    /**buildInputPanel
      * 
-     * Creates the contents of the window
+     * Creates the contents of the input area
      * 
      */
     private void buildInputPanel(){
@@ -233,7 +233,7 @@ public class RenamerGui extends JFrame{
     
     /**buildOriginalPanel
      * 
-     * Creates the contents of the window
+     * Creates the contents of the current names area
      * 
      */
     private void buildOriginalPanel(){
@@ -257,7 +257,7 @@ public class RenamerGui extends JFrame{
     
     /**buildMainPanel
      * 
-     * Creates the contents of the window
+     * Creates the contents of the new names area
      * 
      */
     private void buildPreviewPanel(){

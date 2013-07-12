@@ -61,6 +61,31 @@ h3{
     border-bottom:      1px solid #000000;
 }
 
+table{
+
+    border-collapse:    collapse;
+    border:             2px solid #000000;
+    
+    margin-top:         1em;
+}
+
+dt{
+    
+    font-weight:        bold;    
+    
+    border-bottom:      1px solid #000000;
+    
+    margin-top:         1em;
+}
+    
+table th,
+table td{
+
+    border:             2px solid #000000;
+    
+    width:              200px;
+}
+
 footer{
     
     text-align:         center;

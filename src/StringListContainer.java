@@ -22,7 +22,7 @@
  *   | - actCounter(String[], String)       String[]        |   *
  *   | - actSubstring(String[], String)     String[]        |   *
  *   |                                                      |   * 
- *   | + addAction()                                        |   *
+ *   | + addAction(int, String)                             |   *
  *   | + setAction(int, int, String)                        |   *
  *   |                                                      |   * 
  *   | + getModStringList()                 String[]        |   *

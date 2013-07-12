@@ -1,0 +1,75 @@
+/* HTML Up Arrow Character Code: &#8593; */
+
+table.UML{
+    
+    border-collapse:        collapse;
+    border:                 none;
+    
+    min-width:              35em;
+    margin:                 1em auto;
+    
+}
+
+
+table.UML th{
+    
+    border:                 none;
+    
+    width:                  70%;
+    
+}
+
+table.UML td{
+    
+    border:                 none;
+    
+    width:                  30%;
+    
+}
+table.UML tbody.umlInheritArrow{
+    font-size:              3em;
+    
+}
+table.UML tbody.umlInherit,
+table.UML tbody.umlName{
+    
+    font-size:              1.5em;
+    
+    border:                 2px solid #000000;
+}
+
+table.UML tbody.umlInherit,
+table.UML tbody.umlFields,
+table.UML tbody.umlMethods{
+    
+    border:                 2px solid #000000;
+    
+}
+table.UML tbody.umlFields th,
+table.UML tbody.umlMethods th{
+    
+    text-align:             left;
+    
+}
+table.UML tbody.umlFields tr th:after,
+table.UML tbody.umlMethods tr th:after{
+    
+    content:                ": ";
+    
+}
+table.UML tbody tr.umlPublic th:before{
+    
+    content:                " + ";
+    
+}
+
+table.UML tbody tr.umlPrivate th:before{
+    
+    content:                " - ";
+    
+}
+
+.umlSpacer{
+    
+    height:                 1em;
+}                 

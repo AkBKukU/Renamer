@@ -8,7 +8,7 @@ public class Renamer {
     public static RenamerGui window;
     public static StringListContainer stringListContainer;
     public static String folderPath;
-    public static String demoEntries[] = {
+    private static String demoEntries[] = {
         "the quick brown fox jumps over the lazy dog.mp3",
         "abcdefghijklmnopqrstuvwxyz.DOCX",
         "lorem ipsum dolor sit amet.gif"

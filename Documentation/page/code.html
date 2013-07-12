@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title> Renamer Specifications </title>
+        <meta charset=utf-8>
+        <link rel=StyleSheet href="../content/styles/global.css" type="text/css">
+        <link rel=StyleSheet href="../content/styles/uml.css" type="text/css">
+        
+    </head>
+    <body>
+        <div id="site" class="theme" >
+        
+		    <header>
+                <h1><a href="../index.html"> Renamer Specifications</a> v0.01 </h1>
+                <h2> - Code </h2>
+                <nav>
+                    <ul>
+                        <li><a href="stringMods.html" > String Modifiers </a></li>
+                        <li><a href="#layout" > Layout </a></li>
+                        <li><a href="code.html" > Code </a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div id="wrapper" class="theme" >
+                <p>
+                    The program is divided into four main classes. Renamer: the main execution class, RenamerGUI: initializes the graphic interface, StringListContainer: Hold and modifies the filenames, and ConfigHandler: opens the language packs for reading. Also important are the settings.cfg file and the lang folder.
+                </p>
+                
+                <dl>
+                    <dt>Renamer</dt>
+                    
+                    <dd>
+                        Starts the application. Can be launched normally or with the argument -d or --demo to have the program output some examples of what it does in the console.
+                        <table class="UML">
+                            <tbody class="umlName">
+                                <tr>
+                                    <th colspan="2" >Renamer</th>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlFields">
+                                <tr class="umlPublic">
+                                    <th>runMode</th>
+                                    <td>int</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>window</th>
+                                    <td>RenamerGui</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>stringListContainer</th>
+                                    <td>StringListContainer </td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>folderPath</th>
+                                    <td>String  </td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>demoEntries</th>
+                                    <td>String[] </td>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlMethods">
+                                <tr class="umlPublic">
+                                    <th>main(String[] args)</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>parseArgs(String[] args)</th>
+                                    <td>void</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                    
+                    
+                    <dt>RenamerGUI</dt>
+                    
+                    <dd>
+                        Creates all of the graphical emlements for the program. Due to the number of Fields it has I will be limiting the UML to only important information.
+                        
+                        <table class="UML">
+                            <tbody class="umlInherit">
+                                <tr>
+                                    <th colspan="2" >JFrame</th>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlInheritArrow">
+                                <tr>
+                                    <th colspan="2" >&#8593;</th>
+                                </tr>
+                            </tbody>
+                            <tbody class="umlName">
+                                <tr>
+                                    <th colspan="2" >RenamerGUI</th>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlFields">
+                                <tr class="umlPrivate">
+                                    <th>userLanguage</th>
+                                    <td>String </td>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlMethods">
+                                <tr class="umlPrivate">
+                                    <th>buildMainPanel()</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>buildInputPanel()</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>buildOriginalPanel()</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>buildPreviewPanel()</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>defaultEnglish()</th>
+                                    <td>void</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                    
+                    
+                    <dt>StringListContainer</dt>
+                    
+                    <dd>
+                        This is the heart of Renamer. This class opens a folder and gets a list of the files in it. You then store actions in it to make the name change.
+                        
+                        <table class="UML">
+                            <tbody class="umlName">
+                                <tr>
+                                    <th colspan="2" >StringListContainer</th>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlFields">
+                                <tr class="umlPublic">
+                                    <th>NUM_OF_ACTIONS</th>
+                                    <td>int</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>modActions</th>
+                                    <td>String[]</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>folderPath</th>
+                                    <td>String </td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>stringList</th>
+                                    <td>String[]  </td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>hardList</th>
+                                    <td>String[]  </td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>extensionList</th>
+                                    <td>String[]  </td>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlMethods">
+                                <tr class="umlPublic">
+                                    <th>setFolder(String newFolder)</th>
+                                    <td>void</td>
+                                </tr>
+                                
+                                <tr><td class="umlSpacer"> </td><td> </td></tr>
+                                
+                                <tr class="umlPrivate">
+                                    <th>actString(String[] input, String modValues)</th>
+                                    <td>String[]</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>actReplace(String[] input, String modValues)</th>
+                                    <td>String[]</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>actCounter(String[] input, String modValues)</th>
+                                    <td>String[]</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>actSubstring(String[] input, String modValues)</th>
+                                    <td>String[]</td>
+                                </tr>
+                                
+                                <tr><td class="umlSpacer"> </td><td> </td></tr>
+                                
+                                <tr class="umlPublic">
+                                    <th>addAction(int actionID, String actionValue)</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>setAction(int actionListID, int actionID, String actionValue)</th>
+                                    <td>void</td>
+                                </tr>
+                                
+                                <tr><td class="umlSpacer"> </td><td> </td></tr>
+                                
+                                <tr class="umlPrivate">
+                                    <th>getModStringList()</th>
+                                    <td>String[]</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>getModStringListPlain()</th>
+                                    <td>String[]</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>getStringList()</th>
+                                    <td>String[]</td>
+                                </tr>
+                                
+                                <tr><td class="umlSpacer"> </td><td> </td></tr>
+                                
+                                <tr class="umlPublic">
+                                    <th>commitNames()</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>revertNames()</th>
+                                    <td>void</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                    
+                    
+                    <dt>ConfigHandler</dt>
+                    
+                    <dd>
+                        This class handles opening configuration files to read the settings. It is used to load the users perfered language.
+                        
+                        <table class="UML">
+                            <tbody class="umlName">
+                                <tr>
+                                    <th colspan="2" >ConfigHandler</th>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlFields">
+                                <tr class="umlPrivate">
+                                    <th>configFile</th>
+                                    <td>File</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>loadFile</th>
+                                    <td>Scanner</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>filePath</th>
+                                    <td>String </td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>rawDump</th>
+                                    <td>String[]  </td>
+                                </tr>
+                            </tbody>
+                            
+                            <tbody class="umlMethods">
+                                <tr class="umlPublic">
+                                    <th>ConfigHandler()</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>ConfigHandler(String file)</th>
+                                    <td>void</td>
+                                </tr>
+                                
+                                <tr><td class="umlSpacer"> </td><td> </td></tr>
+                                
+                                <tr class="umlPublic">
+                                    <th>openFile(String file)</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>getValueFor(String needle)</th>
+                                    <td>String</td>
+                                </tr>
+                                <tr class="umlPrivate">
+                                    <th>getArray(String file)</th>
+                                    <td>void</td>
+                                </tr>
+                                <tr class="umlPublic">
+                                    <th>countLines(String file)</th>
+                                    <td>int</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dd>
+                
+                
+                </dl>
+                
+<!--                                        Footer Begin                                        -->
+            </div>
+        </div>
+
+        <footer>
+            <p>Renamer is by Shelby Jueden <a href="https://github.com/AkBKukU/Renamer" title="It's on GitHub">View project on GitHub</a></p>
+        </footer>
+
+    </body>
+</html>
+        		
+

@@ -1,0 +1,113 @@
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title> Renamer Specifications </title>
+        <meta charset=utf-8>
+        <link rel=StyleSheet href="../content/styles/global.css" type="text/css">
+        
+    </head>
+    <body>
+        <div id="site" class="theme" >
+        
+		    <header>
+                <h1><a href="../index.html"> Renamer Specifications</a> v0.01 </h1>
+                <h2> - String Modifiers </h2>
+                <nav>
+                    <ul>
+                        <li><a href="#stringModifier" > String Modifiers </a></li>
+                        <li><a href="layout.html" > Layout </a></li>
+                        <li><a href="code.html" > Code </a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div id="wrapper" class="theme" >
+                <p>
+                    The string modifiers are the core of what Renamer is. They are used to "build" a new name for each file. Each one performs an action on the new name and adds to the final output. Each action has two input fields to change how it modifies the text. Here is a rundown of each action and how to use it.
+                </p>
+                
+                <dl>
+                    <dt>Add String</dt>
+                    
+                    <dd>
+                        This action adds plain text to the output string.
+                        <table>
+                            <tr>
+                                <th>Field 1</th>
+                                <th>Field 2</th>
+                            </tr>
+                            <tr>
+                                <td>Text to be added</td>
+                                <td>More text to be added</td>
+                            </tr>
+                        </table>
+                    </dd>
+                    
+                    
+                    <dt>Replace</dt>
+                    
+                    <dd>
+                        This action replaces one piece of text int the output string with another. It needs to be used after the action that adds the text to be replaced. This can be used to remove text by not adding any new text.
+                        <table>
+                            <tr>
+                                <th>Field 1</th>
+                                <th>Field 2</th>
+                            </tr>
+                            <tr>
+                                <td>Text to be replaced</td>
+                                <td>Text to be inserted</td>
+                            </tr>
+                        </table>
+                    </dd>
+                    
+                    
+                    <dt>Counter</dt>
+                    
+                    <dd>
+                        This action adds a counter to the text. It takes a digit amount and a starting integer. The number of digits is added as a string such as "0000" to show you want four digits. The starting integer is the number that the counter begins at.
+                        <table>
+                            <tr>
+                                <th>Field 1</th>
+                                <th>Field 2</th>
+                            </tr>
+                            <tr>
+                                <td>Digits string</td>
+                                <td>Starting integer</td>
+                            </tr>
+                        </table>
+                    </dd>
+                    
+                    
+                    <dt>Substring</dt>
+                    
+                    <dd>
+                        This action adds a part of the original filename. It takes two integers to indicate the start and end point of the section of the original file name. If both fields are left blank the entire original name will be added.
+                        <table>
+                            <tr>
+                                <th>Field 1</th>
+                                <th>Field 2</th>
+                            </tr>
+                            <tr>
+                                <td>Start position integer</td>
+                                <td>End position integer</td>
+                            </tr>
+                        </table>
+                    </dd>
+                
+                
+                </dl>
+                    
+                
+<!--                                        Footer Begin                                        -->
+            </div>
+        </div>
+
+        <footer>
+            <p>Renamer is by Shelby Jueden <a href="https://github.com/AkBKukU/Renamer" title="It's on GitHub">View project on GitHub</a></p>
+        </footer>
+
+    </body>
+</html>
+        		
+

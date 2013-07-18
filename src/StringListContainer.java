@@ -431,6 +431,47 @@ public class StringListContainer {
         }
         return localOutput;
     }
+    
+    /* actSmartCase
+     * 
+     * Tries to make a pleasant looking string out of the text
+     * 
+     * ID: 6
+     * 
+     */
+    private String[] actSmartCase(String[] input, String modValues){
+        
+        final int STRING_COUNT = input.length;
+        String[] output = new String[STRING_COUNT];
+        
+        for(int c = 0; c < STRING_COUNT; c++){
+        	output[c] = input[c].toLowerCase();
+        }
+        
+        for(int c = 0; c < STRING_COUNT; c++){
+        	
+        	//--Capitalize First Letter
+        	output[c] = input[c].replace(input[c], input[c].substring(0,1).toUpperCase() + input[c].substring(1)) ;
+        	
+        	int STRING_LENGTH = output[c].length();
+        	
+        	for(int d = 1; d < STRING_LENGTH-1; d++){
+        		
+        		//--Checks if there is a space and then a letter then a letter or a space and will capitalize the middle letter
+        		if(
+        			output[c].charAt(d-1) == ' ' && 
+    				Character.isLetter(output[c].charAt(d)) && 
+    				Character.isLowerCase(output[c].charAt(d)) && 
+    				(Character.isLetter(output[c].charAt(d+1)) || output[c].charAt(d-1) == ' ') 
+				){
+        			output[c] = output[c].replace(output[c], output[c].substring(0,d) + output[c].substring(d,d+1).toUpperCase() + output[c].substring(d+1)) ;
+        			d = 1;
+        		}
+        	}
+        }
+        
+        return output;
+    }
 
 
     
@@ -549,6 +590,10 @@ public class StringListContainer {
 
                 case '5':
                     output = this.actLowercase(output, modActions[c].substring(1));
+                    break;
+
+                case '6':
+                    output = this.actSmartCase(output, modActions[c].substring(1));
                     break;
                     
                 default:

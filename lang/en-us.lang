@@ -2,7 +2,7 @@ name: English US
 by: Shelby Jueden
 from: 
 
-actionList: None,Add String,Replace,Counter,Substring,Uppercase,Lowercase
+actionList: None,Add String,Replace,Counter,Substring,Uppercase,Lowercase,SmartCase
 
 mainMenuFileText: File
 mainMenuFileOpen: Open Folder

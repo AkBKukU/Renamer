@@ -709,7 +709,7 @@ public class RenamerGui extends JFrame{
         userLanguageAuthor =        "Shelby Jueden";
         userLanguageBase =          "Built in language";
 
-        actionListText =            "None,Add String,Replace,Counter,Substring,Uppercase,Lowercase";
+        actionListText =            "None,Add String,Replace,Counter,Substring,Uppercase,Lowercase,SmartCase";
         
         mainMenuFileText =          "File";
         mainMenuFileOpenText =      "Open Folder";

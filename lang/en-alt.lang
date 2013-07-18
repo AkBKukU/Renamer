@@ -2,7 +2,7 @@ name:English ALT
 by:Shelby Jueden
 from: 
 
-actionList: Blank,Text,Substitute,Counter,Section
+actionList: Blank,Text,Substitute,Counter,Section,Uppercase,Lowercase
 
 mainMenuFileText: File
 mainMenuFileOpen: Select Folder

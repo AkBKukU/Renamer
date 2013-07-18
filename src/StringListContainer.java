@@ -318,6 +318,120 @@ public class StringListContainer {
         return localOutput;
     }
 
+    
+    /* actUppercase
+     * 
+     * Uppercases the whole or part of the text
+     * 
+     * ID: 4
+     * 
+     */
+    private String[] actUppercase(String[] input, String modValues){
+
+        final int STRING_COUNT = this.stringList.length;
+        String[] localOutput = new String[STRING_COUNT];
+        
+        boolean isValid = true;
+        
+        //--Get the two values
+        String[] stringLimits= modValues.split("/");
+        int start = 0;
+        int end = 100;
+        
+
+        //--Make sure the user input valid ints
+        if(stringLimits.length > 0){
+            try { 
+                start = Integer.parseInt(stringLimits[0]); 
+            } catch(NumberFormatException e) { 
+                isValid = false;
+            }
+        }
+        if(stringLimits.length > 1){
+            try { 
+                end = Integer.parseInt(stringLimits[1]); 
+            } catch(NumberFormatException e) { 
+                isValid = false;
+            }
+        }
+        
+        int tempEnd = end;
+
+        
+        //--Final validity check and write substring
+        if(isValid){
+            for(int c = 0; c < STRING_COUNT; c++){
+                
+                //--Check if end from user is longer than string and correct
+                tempEnd = end;
+                if(end > input[c].length() ){
+                    tempEnd = input[c].length();
+                }
+                
+                localOutput[c] = input[c].replace(input[c].substring(start,tempEnd), input[c].substring(start,tempEnd).toUpperCase()) ;
+                
+            }
+        }
+        return localOutput;
+    }
+
+    
+    /* actLowercase
+     * 
+     * Lowercases the whole or part of the text
+     * 
+     * ID: 5
+     * 
+     */
+    private String[] actLowercase(String[] input, String modValues){
+
+        final int STRING_COUNT = this.stringList.length;
+        String[] localOutput = new String[STRING_COUNT];
+        
+        boolean isValid = true;
+        
+        //--Get the two values
+        String[] stringLimits= modValues.split("/");
+        int start = 0;
+        int end = 100;
+        
+
+        //--Make sure the user input valid ints
+        if(stringLimits.length > 0){
+            try { 
+                start = Integer.parseInt(stringLimits[0]); 
+            } catch(NumberFormatException e) { 
+                isValid = false;
+            }
+        }
+        if(stringLimits.length > 1){
+            try { 
+                end = Integer.parseInt(stringLimits[1]); 
+            } catch(NumberFormatException e) { 
+                isValid = false;
+            }
+        }
+        
+        int tempEnd = end;
+
+        
+        //--Final validity check and write substring
+        if(isValid){
+            for(int c = 0; c < STRING_COUNT; c++){
+                
+                //--Check if end from user is longer than string and correct
+                tempEnd = end;
+                if(end > input[c].length() ){
+                    tempEnd = input[c].length();
+                }
+                
+                localOutput[c] = input[c].replace(input[c].substring(start,tempEnd), input[c].substring(start,tempEnd).toLowerCase()) ;
+                
+            }
+        }
+        return localOutput;
+    }
+
 
     
     /* addAction
@@ -427,6 +541,14 @@ public class StringListContainer {
 
                 case '3':
                     output = this.actSubstring(output, modActions[c].substring(1));
+                    break;
+
+                case '4':
+                    output = this.actUppercase(output, modActions[c].substring(1));
+                    break;
+
+                case '5':
+                    output = this.actLowercase(output, modActions[c].substring(1));
                     break;
                     
                 default:

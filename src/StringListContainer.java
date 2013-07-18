@@ -51,8 +51,8 @@ public class StringListContainer {
     //--Field Declarations
     public static final int NUM_OF_ACTIONS = 10; //--10 is arbitrary. This value can be modified to change how many actions are allowed
     public String[] modActions = new String[NUM_OF_ACTIONS];
-    public String folderPath;
-    public String stringList[];
+    public static String folderPath;
+    public static  String stringList[];
     public String hardList[];
     public String extensionList[];
 

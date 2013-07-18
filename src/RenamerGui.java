@@ -13,6 +13,8 @@ public class RenamerGui extends JFrame{
     //--Field Declarations
     
     //--Panels
+    private JPanel generalPanel;
+    private JPanel statusPanel;
     private JPanel mainPanel;
     private JPanel inputPanel;
     private JPanel originalPanel;
@@ -44,6 +46,8 @@ public class RenamerGui extends JFrame{
     private JLabel newNameLabel;
     private JScrollPane newNameScrollPane;
     private JList newNameList;
+    private JTextField statusFolder;
+    private JTextField statusItemCount;
     
 
     
@@ -95,13 +99,70 @@ public class RenamerGui extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //--Add content
-        buildMainPanel();
-        add(mainPanel);
+        buildGeneralPanel();
+        add(generalPanel);
         
         //--Show Window
         setVisible(true);
         
         
+    }
+    
+    /**buildGeneralPanel
+     * 
+     * Creates the contents of the main area and the status area
+     * 
+     */
+    private void buildGeneralPanel(){
+        
+    	generalPanel = new JPanel();
+        //--Add padding
+    	generalPanel.setLayout( new BorderLayout() );
+        //--Set rows based on how many actions are allowed
+
+        //--Add content
+        buildMainPanel();
+        generalPanel.add(mainPanel,BorderLayout.CENTER);
+        
+        buildStatusPanel();
+        generalPanel.add(statusPanel,BorderLayout.SOUTH);
+    }
+    
+    /**buildStatusPanel
+     * 
+     * Creates the contents of the status area
+     * 
+     */
+    private void buildStatusPanel(){
+        
+    	statusPanel = new JPanel();
+        //--Add padding
+    	statusPanel.setBorder(BorderFactory.createLoweredBevelBorder() );
+    	statusPanel.setLayout( new GridBagLayout() );
+        GridBagConstraints c = new GridBagConstraints();
+        
+        //--Define layouts for items
+    	statusFolder = new JTextField(StringListContainer.folderPath);
+    	statusFolder.setEditable(false);
+    	
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.weightx = 1;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        statusPanel.add(statusFolder,c);
+    	
+    	
+    	statusItemCount = new JTextField(StringListContainer.stringList.length + " ITEMS");
+    	statusItemCount.setEditable(false);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        statusPanel.add(statusItemCount);
+        //--Add content
+               
     }
     
     /**buildMainPanel
@@ -401,6 +462,8 @@ public class RenamerGui extends JFrame{
                 //--Update Gui
                 originalNameList.setListData(Renamer.stringListContainer.getStringList());
                 newNameList.setListData(Renamer.stringListContainer.getModStringList());
+            	statusItemCount.setText(StringListContainer.stringList.length + " ITEMS");
+            	statusFolder.setText(StringListContainer.folderPath);
             }
         }
     }

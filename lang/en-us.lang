@@ -1,8 +1,10 @@
 name: English US
+id: en-us
 by: Shelby Jueden
 from: 
 
 actionList: None,Add String,Replace,Counter,Substring,Uppercase,Lowercase,SmartCase
+statusBarItems: ITEMS
 
 mainMenuFileText: File
 mainMenuFileOpen: Open Folder

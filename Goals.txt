@@ -27,3 +27,8 @@ Testing: 3-4h
  
 
 This is actually a program I have been meaning to write for a while so I am excited to do it. I will continue the development after this class is over because I will be using it a lot.
+
+
+New Goals to achive:
+mp3 meta data access
+regular file meta data

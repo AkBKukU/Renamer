@@ -177,10 +177,8 @@ public class ConfigHandler {
         
         for(int c=0;c < itemCount;c++){
 
-            dataArray[0][c] = itemLines[c].split(":")
-                    [0].trim();
-            dataArray[1][c] = itemLines[c].split(":")
-                    [1].trim();
+            dataArray[0][c] = itemLines[c].split(":")[0].trim();
+            dataArray[1][c] = itemLines[c].split(":")[1].trim();
             
         
         }

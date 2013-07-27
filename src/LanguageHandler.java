@@ -172,7 +172,7 @@ public class LanguageHandler {
         langFileNames = tempFileNames.split(":");
         
         laguagesData = new String[numLangFiles][2][];
-        for(int c = 0; c < 2;c++){
+        for(int c = 0; c < numLangFiles;c++){
             laguagesData[c][0] = new String[numLangFiles]; 
             laguagesData[c][1] = new String[numLangFiles];   
         }

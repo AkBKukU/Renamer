@@ -1,7 +1,7 @@
 name: English US
 id: en-us
 by: Shelby Jueden
-from: 
+from: original
 
 actionList: None,Add String,Replace,Counter,Substring,Uppercase,Lowercase,SmartCase
 statusBarItems: ITEMS

@@ -451,7 +451,7 @@ public class StringListContainer {
         for(int c = 0; c < STRING_COUNT; c++){
             
             //--Capitalize First Letter
-            output[c] = input[c].replace(input[c], input[c].substring(0,1).toUpperCase() + input[c].substring(1)) ;
+            output[c] = input[c].replace( input[c], input[c].substring(0,1).toUpperCase() + input[c].substring(1) );
             
             int STRING_LENGTH = output[c].length();
             
@@ -467,6 +467,31 @@ public class StringListContainer {
                     output[c] = output[c].replace(output[c], output[c].substring(0,d) + output[c].substring(d,d+1).toUpperCase() + output[c].substring(d+1)) ;
                     d = 1;
                 }
+            }
+        }
+        
+        String[] lowercaseWords = { "to", "a", "the", "at", "in", "with", "and", "but", "or"};
+        final int NUMLOWWORDS = lowercaseWords.length;
+        for(int c = 0; c < STRING_COUNT; c++){
+            
+            for(int d = 0; d < NUMLOWWORDS; d++){
+
+                output[c] = output[c].replace( 
+                        " " + lowercaseWords[d].substring(0,1).toUpperCase() + lowercaseWords[d].substring(1) + " ",
+                        " " + lowercaseWords[d] + " "
+                );
+                
+            }
+            
+            for(int d = 0; d < output[c].length(); d++){
+
+                if(Character.isLetter(output[c].charAt(d))){
+                    
+                    output[c] = output[c].replace(output[c], output[c].substring(0,d) + output[c].substring(d,d+1).toUpperCase() + output[c].substring(d+1)) ;
+                    
+                    d = output[c].length();
+                }
+                
             }
         }
         
@@ -506,7 +531,7 @@ public class StringListContainer {
      * 
      */
     public void setAction(int actionListID, int actionID, String actionValue){
-        
+        System.out.println("Action " + actionListID + " set to " + actionID);
         boolean isValid = true;
         //--Makes sure is a valid index
         if( !(actionListID < NUM_OF_ACTIONS) ){ isValid = false; }
@@ -523,6 +548,9 @@ public class StringListContainer {
         if(isValid){
                 
                 modActions[actionListID] = actionID + actionValue;
+        }else if(actionID == (int) -1){
+
+            modActions[actionListID] = 0 + "";
         }
         
     }

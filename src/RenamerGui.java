@@ -397,6 +397,9 @@ public class RenamerGui extends JFrame{
             for(int c = 0;c<StringListContainer.NUM_OF_ACTIONS;c++){
                 if(actionID[c].getSelectedIndex() != 0){
                     Renamer.stringListContainer.setAction(c, actionID[c].getSelectedIndex()-1, actionValues[c]);
+                }else if(actionID[c].getSelectedIndex() == 0){
+                    Renamer.stringListContainer.setAction(c, -1, "/");
+                    
                 }
             }
 

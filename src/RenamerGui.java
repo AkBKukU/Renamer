@@ -461,8 +461,21 @@ public class RenamerGui extends JFrame{
     private class RenameListener implements ActionListener{
         
         public void actionPerformed(ActionEvent e){
-            
-            Renamer.stringListContainer.commitNames();
+
+            if(Renamer.stringListContainer.commitNames() != 0){
+
+                final int STRING_COUNT = StringListContainer.stringList.length;
+                String[] newNames = Renamer.stringListContainer.getModStringList();
+                String errorOutput = "";
+                
+                for(int c = 0; c < STRING_COUNT;c++){
+                    if(StringListContainer.errors[c] != "none"){
+                        errorOutput = errorOutput + newNames[c] + ": " + StringListContainer.errors[c] + "\n";
+                    }
+                }
+                
+                JOptionPane.showMessageDialog(null, "The following errors have occurred: \n" + errorOutput, "ERRORS!", JOptionPane.INFORMATION_MESSAGE);
+            }
 
             //--Update Gui
             originalNameList.setListData(Renamer.stringListContainer.getStringList());

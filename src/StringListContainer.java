@@ -53,6 +53,7 @@ public class StringListContainer {
     public String[] modActions = new String[NUM_OF_ACTIONS];
     public static String folderPath;
     public static  String stringList[];
+    public static String[] errors;
     public String hardList[];
     public String extensionList[];
 
@@ -531,7 +532,7 @@ public class StringListContainer {
      * 
      */
     public void setAction(int actionListID, int actionID, String actionValue){
-        System.out.println("Action " + actionListID + " set to " + actionID);
+        
         boolean isValid = true;
         //--Makes sure is a valid index
         if( !(actionListID < NUM_OF_ACTIONS) ){ isValid = false; }
@@ -656,7 +657,19 @@ public class StringListContainer {
      * Commits the modded strings to the files
      * 
      */
-    public void commitNames(){
+    public int commitNames(){
+        return this.commitNames(1);
+    }
+    
+    
+    /* commitNames
+     * 
+     * Commits the modded strings to the files
+     * Specifies the tolerance level for errors to pass at
+     * 
+     * 
+     */
+    public int commitNames(int errorTolerance){
         
         final int STRING_COUNT = stringList.length;
         
@@ -664,26 +677,78 @@ public class StringListContainer {
         String[] originalNames = getStringList();
         String[] modNames = getModStringListPlain();
         String[] newNames = getModStringList();
+        errors = new String[STRING_COUNT];
+        int errorLevel = 0;
 
         for(int c = 0; c < STRING_COUNT; c++){
-            originalNames[c] = folderPath + File.separator + originalNames[c];
-            newNames[c] = folderPath + File.separator + newNames[c];
+            
+            errors[c] = "none";
 
-            File oldFile = new File(originalNames[c]);
-            File newFile = new File(newNames[c]);
-            
-            //--Check if there is already a file by the name
-            if(newFile.exists()){
-                System.out.println("A " + newFile.getName() + " already exists!");
+            for(int d = 0; d < STRING_COUNT; d++){
+                
+                if(c == d){
+                    //--Do nothing on it's own name
+                    
+                }else if( newNames[c].equals(originalNames[d]) ){
+                    errors[c] = "There was already a file called this";
+                    if(errorLevel < 2)errorLevel = 2;
+                    
+                }else if( newNames[c].equalsIgnoreCase(originalNames[d]) ){
+                    errors[c] = "There was already a file called this with a different case";
+                    if(errorLevel < 2)errorLevel = 2;
+                    
+                }else if(newNames[c].equals(newNames[d]) ){
+                    errors[c] = "There would be another file called this";
+                    if(errorLevel < 2)errorLevel = 2;
+                    
+                }else if(newNames[c].equalsIgnoreCase(newNames[d]) ){
+                    errors[c] = "There would be another file called this with a different case";
+                    if(errorLevel < 2)errorLevel = 2;
+                    
+                }else if( newNames[c].contains("/") || newNames[c].contains("\0") ){
+                    errors[c] = "Not a valid file Under UNIX or MS-DOS/Windows";
+                    if(errorLevel < 2)errorLevel = 2;
+                    
+                }else if( 
+                    newNames[c].contains("\\") || 
+                    newNames[c].contains("/") || 
+                    newNames[c].contains(":") || 
+                    newNames[c].contains("*") || 
+                    newNames[c].contains("?") || 
+                    newNames[c].contains("\"") || 
+                    newNames[c].contains("<") || 
+                    newNames[c].contains(">") || 
+                    newNames[c].contains("|")
+                ){
+                    errors[c] = "Not a valid file Under MS-DOS/Windows";
+                    if(errorLevel < 1)errorLevel = 1;
+                    
+                }
             }
-            
-            //--Perform change and check if succeeded and change field to reflect new name
-            if ( oldFile.renameTo(newFile) ) {
-                stringList[c] = modNames[c];
-            }
-            
             
         }
+        
+
+        if(errorLevel < errorTolerance){
+            for(int c = 0; c < STRING_COUNT; c++){
+                originalNames[c] = folderPath + File.separator + originalNames[c];
+                newNames[c] = folderPath + File.separator + newNames[c];
+    
+                File oldFile = new File(originalNames[c]);
+                File newFile = new File(newNames[c]);
+                                
+                //--Perform change and check if succeeded and change field to reflect new name occurred 
+                if ( oldFile.renameTo(newFile) ) {
+                    stringList[c] = modNames[c];
+                }else{
+                    errors[c] = "A last minute error occurred. Check your values and the original names.";
+                    if(errorLevel < 2)errorLevel = 2;
+                }
+                
+                
+            }
+        }
+        return errorLevel;
     }
     /* revertNames
      * 

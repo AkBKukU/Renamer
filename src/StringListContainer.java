@@ -54,6 +54,7 @@ public class StringListContainer {
     public static String folderPath;
     public static  String stringList[];
     public static String[] errors;
+    public final static String VALUE_DELIM = ":VALUE_SPLIT:";
     public String hardList[];
     public String extensionList[];
 
@@ -158,7 +159,7 @@ public class StringListContainer {
         String[] output = new String[STRING_COUNT];
         
         for(int c = 0; c < STRING_COUNT; c++){
-            output[c] = input[c] + modValues.replace("/", "");
+            output[c] = input[c] + modValues.replace(StringListContainer.VALUE_DELIM, "");
         }
         
         return output;
@@ -179,7 +180,7 @@ public class StringListContainer {
         String[] output = new String[STRING_COUNT];
 
         //--Get the two values
-        String[] splitValues = modValues.split("/");
+        String[] splitValues = modValues.split(VALUE_DELIM);
         
         //--Check if second value is set and use nothing if not
         if(splitValues.length > 1){
@@ -213,7 +214,7 @@ public class StringListContainer {
         String[] output = new String[STRING_COUNT];
         
         //--Get the two values
-        String[] splitValues = modValues.split("/");
+        String[] splitValues = modValues.split(VALUE_DELIM);
         
         //--Check if set then get number of digits
         if(splitValues.length > 0){
@@ -279,7 +280,7 @@ public class StringListContainer {
         boolean isValid = true;
         
         //--Get the two values
-        String[] stringLimits= modValues.split("/");
+        String[] stringLimits= modValues.split(VALUE_DELIM);
         int start = 0;
         int end = 100;
         
@@ -335,7 +336,7 @@ public class StringListContainer {
         boolean isValid = true;
         
         //--Get the two values
-        String[] stringLimits= modValues.split("/");
+        String[] stringLimits= modValues.split(VALUE_DELIM);
         int start = 0;
         int end = 100;
         
@@ -392,7 +393,7 @@ public class StringListContainer {
         boolean isValid = true;
         
         //--Get the two values
-        String[] stringLimits= modValues.split("/");
+        String[] stringLimits= modValues.split(VALUE_DELIM);
         int start = 0;
         int end = 100;
         
@@ -538,7 +539,7 @@ public class StringListContainer {
         if( !(actionListID < NUM_OF_ACTIONS) ){ isValid = false; }
         
         //--Check for data
-        String[] stringLimits = actionValue.split("/");
+        String[] stringLimits = actionValue.split(VALUE_DELIM);
         if(stringLimits.length>0){
             if( stringLimits[0].trim() == "" ){ isValid = false; }
         }
@@ -678,8 +679,10 @@ public class StringListContainer {
         String[] modNames = getModStringListPlain();
         String[] newNames = getModStringList();
         errors = new String[STRING_COUNT];
+        
         int errorLevel = 0;
-
+        
+        //--Run through all the file names to check for errors
         for(int c = 0; c < STRING_COUNT; c++){
             
             errors[c] = "none";

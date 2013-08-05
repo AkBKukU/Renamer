@@ -358,7 +358,7 @@ public class RenamerGui extends JFrame{
             //--Collect Values
             for(int c = 0;c<StringListContainer.NUM_OF_ACTIONS;c++){
                 if(actionID[c].getSelectedIndex() != 0){
-                    actionValues[c] = actionInput1[c].getText() + "/" + actionInput2[c].getText();
+                    actionValues[c] = actionInput1[c].getText() + StringListContainer.VALUE_DELIM + actionInput2[c].getText();
                 }
             }
             
@@ -389,7 +389,7 @@ public class RenamerGui extends JFrame{
             //--Collect Values
             for(int c = 0;c<StringListContainer.NUM_OF_ACTIONS;c++){
                 if(actionID[c].getSelectedIndex() != 0){
-                    actionValues[c] = actionInput1[c].getText() + "/" + actionInput2[c].getText();
+                    actionValues[c] = actionInput1[c].getText() + StringListContainer.VALUE_DELIM + actionInput2[c].getText();
                 }
             }
             
@@ -398,7 +398,7 @@ public class RenamerGui extends JFrame{
                 if(actionID[c].getSelectedIndex() != 0){
                     Renamer.stringListContainer.setAction(c, actionID[c].getSelectedIndex()-1, actionValues[c]);
                 }else if(actionID[c].getSelectedIndex() == 0){
-                    Renamer.stringListContainer.setAction(c, -1, "/");
+                    Renamer.stringListContainer.setAction(c, -1, StringListContainer.VALUE_DELIM);
                     
                 }
             }
@@ -576,7 +576,7 @@ public class RenamerGui extends JFrame{
     
     
     /**loadLanguage
-     * 
+     * "/"
      * Loads the strings for the selected language
      * 
      */

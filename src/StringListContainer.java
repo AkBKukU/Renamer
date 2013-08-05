@@ -282,7 +282,7 @@ public class StringListContainer {
         //--Get the two values
         String[] stringLimits= modValues.split(VALUE_DELIM);
         int start = 0;
-        int end = 100;
+        int end = 485;
         
 
         //--Make sure the user input valid ints
@@ -301,6 +301,11 @@ public class StringListContainer {
             }
         }
         
+        if(start >= stringLimits.length && end == 485){
+         end = 0;   
+        }
+
+        int tempStart = start;
         int tempEnd = end;
 
         
@@ -308,13 +313,25 @@ public class StringListContainer {
         if(isValid){
             for(int c = 0; c < STRING_COUNT; c++){
                 
-                //--Check if end from user is longer than string and correct
+                //--Check if values from user are longer than string and correct
+                tempStart = start;
+                if(start > stringList[c].length() ){
+                    tempStart = stringList[c].length();
+                }
                 tempEnd = end;
                 if(end > stringList[c].length() ){
                     tempEnd = stringList[c].length();
                 }
                 
-                localOutput[c] = input[c] + this.stringList[c].substring(start,tempEnd);
+                //--Check if string should be reversed before outputting
+                if(start > end){
+                    String tempString = this.stringList[c].substring(tempEnd,tempStart);
+                    localOutput[c] = input[c] + new StringBuilder(tempString).reverse().toString();
+                    
+                }else{
+                    localOutput[c] = input[c] + this.stringList[c].substring(tempStart,tempEnd);
+                    
+                }
             }
         }
         return localOutput;

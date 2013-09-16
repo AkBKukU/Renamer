@@ -3,7 +3,7 @@ import java.io.*;
 public class LanguageHandler {
     
     //--Field Declarations
-    private String userDesiredLang = "en-us";
+    private String userDesiredLang = "none";
     private String langFolderPath;
     private String[] langFileNames;
     private boolean langPacksFound = false;
@@ -87,11 +87,17 @@ public class LanguageHandler {
     public String getText(String entryName, int languageIndex){
 
         String value = "";
+        boolean notFound = true;
         
         for(int c = 0;c < laguagesData[languageIndex][0].length; c++){
             if( laguagesData[languageIndex][0][c].equals(entryName) ){
+                notFound = false;
                 value = laguagesData[languageIndex][1][c];
             }
+        }
+        
+        if(notFound){
+            
         }
         
         return value;

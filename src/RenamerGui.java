@@ -67,7 +67,21 @@ public class RenamerGui extends JFrame{
         
         //--Set title
         super("Renamer");
-
+        
+        //--Try to set the UI to system native
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        
+        
         //--Load text
         loadLanguage();
         
@@ -560,6 +574,7 @@ public class RenamerGui extends JFrame{
             mainMenuFileOpen.setText( langHandler.getText("mainMenuFileOpen") );
             mainMenuFileRevert.setText( langHandler.getText("mainMenuFileRevert") );
             mainMenuFileExit.setText( langHandler.getText("mainMenuFileExit") );
+            statusItemCount.setText( Renamer.stringListContainer.stringList.length + " " + langHandler.getText("statusBarItems") );
             
             mainMenuAction.setText( langHandler.getText("mainMenuActionText") );
             mainMenuActionRename.setText( langHandler.getText("mainMenuActionRename") );
